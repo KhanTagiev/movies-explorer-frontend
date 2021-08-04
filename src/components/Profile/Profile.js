@@ -1,11 +1,14 @@
 import React from "react";
 
 import './Profile.css';
+import Header from "../Header/Header";
 
-function Profile() {
+function Profile({loggedIn, isNavMenuOpen, onNavMenuOpen, onClose}) {
 
   return (
-    <div></div>
+    <>
+      <Header loggedIn={loggedIn} isNavMenuOpen={isNavMenuOpen} onNavMenuOpen={onNavMenuOpen} onClose={onClose}></Header>
+    </>
   );
 }
 

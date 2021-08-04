@@ -3,14 +3,16 @@ import React from "react";
 import './SavedMovies.css';
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import Header from "../Header/Header";
 
-function SavedMovies() {
+function SavedMovies({loggedIn, isNavMenuOpen, onNavMenuOpen, onClose}) {
 
   return (
-    <div>
+    <>
+      <Header loggedIn={loggedIn} isNavMenuOpen={isNavMenuOpen} onNavMenuOpen={onNavMenuOpen} onClose={onClose}></Header>
       <MoviesCardList></MoviesCardList>
       <MoviesCard></MoviesCard>
-    </div>
+    </>
   );
 }
 
