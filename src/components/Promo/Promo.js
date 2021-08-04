@@ -1,12 +1,9 @@
 import React from "react";
 
-import './Promo.css';
+import "./Promo.css";
 
 function Promo() {
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default Promo;

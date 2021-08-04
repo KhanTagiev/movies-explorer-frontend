@@ -1,12 +1,9 @@
 import React from "react";
 
-import './Techs.css';
+import "./Techs.css";
 
 function Techs() {
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default Techs;

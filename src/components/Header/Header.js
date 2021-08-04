@@ -1,19 +1,22 @@
 import React from "react";
-import {Link, NavLink} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import "./Header.css";
 import logoIcon from "../../images/icons/logo.svg";
 import Navigation from "../Navigation/Navigation";
 
-function Header({loggedIn, isNavMenuOpen, onNavMenuOpen, onClose}) {
-
+function Header({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
   return (
     <header className="header">
       <Link to="/" className="header__logo">
-        <img src={logoIcon} alt="Логотип"/>
+        <img src={logoIcon} alt="Логотип" />
       </Link>
       {loggedIn ? (
-          <Navigation isOpen={isNavMenuOpen} onOpen={onNavMenuOpen} onClose={onClose}></Navigation>
+        <Navigation
+          isOpen={isNavMenuOpen}
+          onOpen={onNavMenuOpen}
+          onClose={onClose}
+        ></Navigation>
       ) : (
         <nav className="header__menu">
           <li className="header__link-container">

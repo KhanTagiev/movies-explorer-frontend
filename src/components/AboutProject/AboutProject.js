@@ -1,12 +1,9 @@
 import React from "react";
 
-import './AboutProject.css';
+import "./AboutProject.css";
 
 function AboutProject() {
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default AboutProject;

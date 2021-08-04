@@ -1,6 +1,6 @@
-import './App.css';
+import "./App.css";
 import React from "react";
-import {Route, Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
@@ -15,27 +15,47 @@ function App() {
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
 
   function handleNavMenuOpen() {
-    setNavMenuOpen(true)
+    setNavMenuOpen(true);
   }
 
   function closeAllPopup() {
-    setNavMenuOpen(false)
+    setNavMenuOpen(false);
   }
 
   return (
     <div className="page">
       <Switch>
         <Route exact path="/">
-          <Main loggedIn={loggedIn} isNavMenuOpen={isNavMenuOpen} onNavMenuOpen={handleNavMenuOpen} onClose={closeAllPopup}></Main>
+          <Main
+            loggedIn={loggedIn}
+            isNavMenuOpen={isNavMenuOpen}
+            onNavMenuOpen={handleNavMenuOpen}
+            onClose={closeAllPopup}
+          ></Main>
         </Route>
         <Route path="/movies">
-          <Movies loggedIn={loggedIn} isNavMenuOpen={isNavMenuOpen} onNavMenuOpen={handleNavMenuOpen} onClose={closeAllPopup}></Movies>
+          <Movies
+            loggedIn={loggedIn}
+            isNavMenuOpen={isNavMenuOpen}
+            onNavMenuOpen={handleNavMenuOpen}
+            onClose={closeAllPopup}
+          ></Movies>
         </Route>
         <Route path="/saved-movies">
-          <SavedMovies loggedIn={loggedIn} isNavMenuOpen={isNavMenuOpen} onNavMenuOpen={handleNavMenuOpen} onClose={closeAllPopup}></SavedMovies>
+          <SavedMovies
+            loggedIn={loggedIn}
+            isNavMenuOpen={isNavMenuOpen}
+            onNavMenuOpen={handleNavMenuOpen}
+            onClose={closeAllPopup}
+          ></SavedMovies>
         </Route>
         <Route path="/profile">
-          <Profile loggedIn={loggedIn} isNavMenuOpen={isNavMenuOpen} onNavMenuOpen={handleNavMenuOpen} onClose={closeAllPopup}></Profile>
+          <Profile
+            loggedIn={loggedIn}
+            isNavMenuOpen={isNavMenuOpen}
+            onNavMenuOpen={handleNavMenuOpen}
+            onClose={closeAllPopup}
+          ></Profile>
         </Route>
         <Route path="/signin">
           <Login></Login>

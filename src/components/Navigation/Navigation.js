@@ -1,40 +1,60 @@
 import React from "react";
-import {Link, NavLink} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import "./Navigation.css";
-import profileIcon from "../../images/icons/profile.svg"
+import profileIcon from "../../images/icons/profile.svg";
 
-function Navigation({isOpen, onOpen, onClose}) {
+function Navigation({ isOpen, onOpen, onClose }) {
   function openNavMenu() {
-    onOpen()
+    onOpen();
   }
 
   return (
     <>
-      <div className={`navigation__container ${isOpen ? "navigation__container_active" : ""}`}>
+      <div
+        className={`navigation__container ${
+          isOpen ? "navigation__container_active" : ""
+        }`}
+      >
         <nav className="navigation__menu">
           <ul className="navigation__links">
             <li className="navigation__link-container">
-              <NavLink exact to="/" className="navigation__link" activeClassName="navigation__link_active">
-                 Главная
+              <NavLink
+                exact
+                to="/"
+                className="navigation__link"
+                activeClassName="navigation__link_active"
+              >
+                Главная
               </NavLink>
             </li>
             <li className="navigation__link-container">
-              <NavLink to="/movies" className="navigation__link" activeClassName="navigation__link_active">
+              <NavLink
+                to="/movies"
+                className="navigation__link"
+                activeClassName="navigation__link_active"
+              >
                 Фильмы
               </NavLink>
             </li>
             <li className="navigation__link-container">
-              <NavLink to="/saved-movies" className="navigation__link" activeClassName="navigation__link_active">
+              <NavLink
+                to="/saved-movies"
+                className="navigation__link"
+                activeClassName="navigation__link_active"
+              >
                 Сохранённые фильмы
               </NavLink>
             </li>
           </ul>
           <li className="navigation__link-container">
-            <Link to="/profile" className="navigation__link navigation__link_profile">
+            <Link
+              to="/profile"
+              className="navigation__link navigation__link_profile"
+            >
               Аккаунт
               <div className="navigation__avatar-container">
-                <img src={profileIcon} alt="Иконка профиля"/>
+                <img src={profileIcon} alt="Иконка профиля" />
               </div>
             </Link>
           </li>
@@ -44,9 +64,15 @@ function Navigation({isOpen, onOpen, onClose}) {
         className="navigation__btn"
         type="button"
         aria-label="Открыть меню"
-        onClick={isOpen? onClose : openNavMenu}
+        onClick={isOpen ? onClose : openNavMenu}
       >
-        <span className={`navigation__btn-icon ${isOpen? "navigation__btn-icon_active" : ""}`}>        </span>
+        <span
+          className={`navigation__btn-icon ${
+            isOpen ? "navigation__btn-icon_active" : ""
+          }`}
+        >
+          {" "}
+        </span>
       </button>
     </>
   );

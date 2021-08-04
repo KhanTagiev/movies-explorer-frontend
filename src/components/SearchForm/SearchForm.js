@@ -1,12 +1,9 @@
 import React from "react";
 
-import './SearchForm.css';
+import "./SearchForm.css";
 
 function SearchForm() {
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default SearchForm;

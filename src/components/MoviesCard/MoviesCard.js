@@ -1,12 +1,9 @@
 import React from "react";
 
-import './MoviesCard.css';
+import "./MoviesCard.css";
 
 function MoviesCard() {
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default MoviesCard;

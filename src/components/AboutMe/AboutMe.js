@@ -1,12 +1,9 @@
 import React from "react";
 
-import './AboutMe.css';
+import "./AboutMe.css";
 
 function AboutMe() {
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default AboutMe;
