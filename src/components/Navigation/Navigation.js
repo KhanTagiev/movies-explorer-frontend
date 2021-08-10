@@ -61,7 +61,7 @@ function Navigation({ isOpen, onOpen, onClose }) {
         </nav>
       </div>
       <button
-        className="navigation__btn"
+        className={`navigation__btn ${isOpen ? "navigation__btn_active" : ""}`}
         type="button"
         aria-label="Открыть меню"
         onClick={isOpen ? onClose : openNavMenu}

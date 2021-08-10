@@ -12,3 +12,20 @@
   flex-direction: column;
   align-items: center;
 }
+
+.page__container {
+  width: calc(100% - 140px);
+  max-width: 1140px;
+}
+
+@media (max-width: 960px) {
+  .page__container {
+    width: calc(100% - 60px);
+  }
+}
+
+@media (max-width: 600px) {
+  .page__container {
+    width: calc(100% - 28px);
+  }
+}

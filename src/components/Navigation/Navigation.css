@@ -1,5 +1,6 @@
 .navigation__container {
   width: 100%;
+  z-index: 4;
 }
 
 .navigation__menu {
@@ -124,6 +125,12 @@
     margin-right: 8px;
   }
 
+  .navigation__btn_active {
+    position: fixed;
+    top: 25px;
+    right: 12px;
+  }
+
   .navigation__btn-icon {
     display: block;
     height: 3px;
@@ -160,6 +167,7 @@
   }
 
   .navigation__btn-icon_active:after {
+    top: 8px;
     transform: rotate(-45deg);
     transform-origin: left top;
   }
@@ -186,6 +194,11 @@
   .navigation__btn {
     width: 22px;
     height: 21px;
+  }
+
+  .navigation__btn_active {
+    top: 16px;
+    right: 7px;
   }
 
   .navigation__btn-icon {
