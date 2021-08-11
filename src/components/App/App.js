@@ -8,7 +8,6 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
-import Footer from "../Footer/Footer";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -64,7 +63,6 @@ function App() {
           <Register></Register>
         </Route>
       </Switch>
-      <Footer></Footer>
     </div>
   );
 }

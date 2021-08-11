@@ -6,6 +6,7 @@ import AboutProject from "../AboutProject/AboutProject";
 import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
   return (
@@ -24,6 +25,7 @@ function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         <Techs></Techs>
       </div>
       <AboutMe></AboutMe>
+      <Footer></Footer>
     </>
   );
 }
