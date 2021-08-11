@@ -1,7 +1,13 @@
-.main__header-container {
+.main__container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.main__container_place_header {
   background-color: #073042;
+}
+
+.main__container_place_techs {
+  background-color: #272727;
 }

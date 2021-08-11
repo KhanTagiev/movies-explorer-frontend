@@ -5,13 +5,12 @@ import Promo from "../Promo/Promo";
 import AboutProject from "../AboutProject/AboutProject";
 import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
-import Portfolio from "../Portfolio/Portfolio";
 import Header from "../Header/Header";
 
 function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
   return (
     <>
-      <div className="main__header-container">
+      <div className="main__container main__container_place_header">
         <Header
           loggedIn={loggedIn}
           isNavMenuOpen={isNavMenuOpen}
@@ -21,9 +20,10 @@ function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         <Promo></Promo>
       </div>
       <AboutProject></AboutProject>
-      <Techs></Techs>
+      <div className="main__container main__container_place_techs">
+        <Techs></Techs>
+      </div>
       <AboutMe></AboutMe>
-      <Portfolio></Portfolio>
     </>
   );
 }

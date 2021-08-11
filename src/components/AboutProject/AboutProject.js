@@ -4,8 +4,11 @@ import "./AboutProject.css";
 
 function AboutProject() {
   return (
-    <section id="about-project" className="about-project__container section__container">
-      <h2 className="about-project__title">О проекте</h2>
+    <section
+      id="about-project"
+      className="about-project__container section__container"
+    >
+      <h2 className="about-project__title section__title">О проекте</h2>
       <ul className="about-project__list">
         <li>
           <p className="about-project__list-title">
