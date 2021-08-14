@@ -18,12 +18,13 @@ function Navigation({ isOpen, onOpen, onClose }) {
       >
         <nav className="navigation__menu">
           <ul className="navigation__links">
-            <li className="navigation__link-container">
+            <li className="navigation__link-container navigation__link-container_main">
               <NavLink
                 exact
                 to="/"
                 className="navigation__link"
                 activeClassName="navigation__link_active"
+                onClick={onClose}
               >
                 Главная
               </NavLink>
@@ -33,6 +34,7 @@ function Navigation({ isOpen, onOpen, onClose }) {
                 to="/movies"
                 className="navigation__link"
                 activeClassName="navigation__link_active"
+                onClick={onClose}
               >
                 Фильмы
               </NavLink>
@@ -42,6 +44,7 @@ function Navigation({ isOpen, onOpen, onClose }) {
                 to="/saved-movies"
                 className="navigation__link"
                 activeClassName="navigation__link_active"
+                onClick={onClose}
               >
                 Сохранённые фильмы
               </NavLink>
@@ -51,6 +54,7 @@ function Navigation({ isOpen, onOpen, onClose }) {
             <Link
               to="/profile"
               className="navigation__link navigation__link_profile"
+              onClick={onClose}
             >
               Аккаунт
               <div className="navigation__avatar-container">

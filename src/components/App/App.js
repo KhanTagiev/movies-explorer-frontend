@@ -10,7 +10,7 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
 
   function handleNavMenuOpen() {

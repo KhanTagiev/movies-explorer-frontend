@@ -22,6 +22,10 @@
   list-style: none;
 }
 
+.navigation__link-container_main {
+  display: none;
+}
+
 .navigation__link-container:not(:last-child) {
   margin-right: 30px;
 }
@@ -89,6 +93,10 @@
   .navigation__links {
     flex-direction: column;
     align-items: center;
+  }
+
+  .navigation__link-container_main {
+    display: list-item;
   }
 
   .navigation__link-container:not(:last-child) {
