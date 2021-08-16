@@ -14,8 +14,8 @@ function SavedMovies({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
       ></Header>
-      <MoviesCardList></MoviesCardList>
-      <MoviesCard></MoviesCard>
+      {/*<MoviesCardList></MoviesCardList>
+      <MoviesCard></MoviesCard>*/}
     </>
   );
 }
