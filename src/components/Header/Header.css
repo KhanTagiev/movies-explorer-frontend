@@ -1,5 +1,15 @@
 .header {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.header_place_main {
+  background-color: #073042;
+}
+.header__container {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 140px);
@@ -49,13 +59,13 @@
 }
 
 @media (max-width: 960px) {
-  .header {
+  .header__container {
     width: calc(100% - 60px);
   }
 }
 
 @media (max-width: 600px) {
-  .header {
+  .header__container {
     width: calc(100% - 28px);
   }
 

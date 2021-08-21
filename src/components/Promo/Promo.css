@@ -1,3 +1,7 @@
+.promo {
+  background-color: #073042;
+}
+
 .promo__container {
   padding: 75px 0 85px;
   background-image: url("../../images/promo_logo.svg");

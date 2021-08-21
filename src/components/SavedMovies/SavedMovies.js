@@ -13,6 +13,7 @@ function SavedMovies({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
+        isMainPlace={true}
       ></Header>
       {/*<MoviesCardList></MoviesCardList>
       <MoviesCard></MoviesCard>*/}

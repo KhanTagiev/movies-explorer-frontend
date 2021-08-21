@@ -27,6 +27,7 @@ function Movies({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
+        isMainPlace={true}
       ></Header>
       <SearchForm
         isChecked={isCheckedShortFilm}

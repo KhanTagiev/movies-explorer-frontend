@@ -11,20 +11,19 @@ import Footer from "../Footer/Footer";
 function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
   return (
     <>
-      <div className="main__container main__container_place_header">
-        <Header
-          loggedIn={loggedIn}
-          isNavMenuOpen={isNavMenuOpen}
-          onNavMenuOpen={onNavMenuOpen}
-          onClose={onClose}
-        ></Header>
+      <Header
+        loggedIn={loggedIn}
+        isNavMenuOpen={isNavMenuOpen}
+        onNavMenuOpen={onNavMenuOpen}
+        onClose={onClose}
+        isMainPlace={true}
+      ></Header>
+      <main className="main">
         <Promo></Promo>
-      </div>
-      <AboutProject></AboutProject>
-      <div className="main__container main__container_place_techs">
+        <AboutProject></AboutProject>
         <Techs></Techs>
-      </div>
-      <AboutMe></AboutMe>
+        <AboutMe></AboutMe>
+      </main>
       <Footer></Footer>
     </>
   );
