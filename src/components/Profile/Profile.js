@@ -12,6 +12,7 @@ function Profile({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
       ></Header>
+      <main className="main"></main>
     </>
   );
 }

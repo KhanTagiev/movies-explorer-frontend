@@ -51,7 +51,7 @@
 }
 
 .movies-card__btn {
-  background: #313131;
+  background-color: #313131;
   border-radius: 30px;
   border: none;
   font-size: 12px;
@@ -62,10 +62,14 @@
   margin: 18px 0;
   cursor: pointer;
   transition: opacity 0.5s ease-out, transform 0.2s ease;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-sizing: border-box;
 }
 
 .movies-card__btn_active {
-  background: #ee3465;
+  background-color: #ee3465;
+  background-image: url("../../images/icons/saved.svg");
 }
 
 .movies-card__btn:hover {
@@ -74,6 +78,11 @@
 
 .movies-card__btn:active {
   transform: scale(0.95);
+}
+
+.movies-card__btn_place_saved-movies {
+  background-color: #313131;
+  background-image: url("../../images/icons/delete.svg");
 }
 
 @media (max-width: 960px) {

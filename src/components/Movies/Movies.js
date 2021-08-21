@@ -19,6 +19,7 @@ function Movies({
   isMoviesListExcess,
   isCheckedShortFilm,
   onCheckedShortFilm,
+  savedMovies,
 }) {
   return (
     <>
@@ -27,22 +28,24 @@ function Movies({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-        isMainPlace={true}
       ></Header>
-      <SearchForm
-        isChecked={isCheckedShortFilm}
-        onChangeCheckbox={onCheckedShortFilm}
-        onSubmit={onSubmit}
-      ></SearchForm>
-      {isLoading ? (
-        <Preloader></Preloader>
-      ) : (
-        <MoviesCardList
-          movies={movies}
-          onAddMovies={onAddMovies}
-          isMoviesListExcess={isMoviesListExcess}
-        ></MoviesCardList>
-      )}
+      <main className="main">
+        <SearchForm
+          isChecked={isCheckedShortFilm}
+          onChangeCheckbox={onCheckedShortFilm}
+          onSubmit={onSubmit}
+        ></SearchForm>
+        {isLoading ? (
+          <Preloader></Preloader>
+        ) : (
+          <MoviesCardList
+            movies={movies}
+            savedMovies={savedMovies}
+            onAddMovies={onAddMovies}
+            isMoviesListExcess={isMoviesListExcess}
+          ></MoviesCardList>
+        )}
+      </main>
       <Footer></Footer>
     </>
   );

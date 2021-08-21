@@ -12,10 +12,11 @@ import moviesDataBase from "../../utils/movies_data";
 
 function App() {
   const [moviesData, setMoviesData] = React.useState([]);
+  const [movies, setMovies] = React.useState([]);
+  const [savedMovies, setSavedMovies] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(true);
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
-  const [movies, setMovies] = React.useState([]);
   const [moviesCount, setMoviesCount] = React.useState(0);
   const [moviesLength, setMoviesLength] = React.useState(0);
   const [isMoviesListExcess, setMoviesListExcess] = React.useState(false);
@@ -23,8 +24,9 @@ function App() {
 
   React.useEffect(() => {
     setMoviesData(moviesDataBase);
-    setMoviesCount(8);
-    setMoviesLength(5);
+    setMoviesCount(12);
+    setMoviesLength(12);
+    setSavedMovies(moviesDataBase.slice(0, 3));
   }, []);
 
   React.useEffect(() => {
@@ -94,6 +96,7 @@ function App() {
             onClose={closeAllPopup}
             onSubmit={handleSearchSubmit}
             movies={movies}
+            savedMovies={savedMovies}
             onAddMovies={handleAddMovies}
             isMoviesListExcess={isMoviesListExcess}
             isCheckedShortFilm={isCheckedShortFilm}
@@ -105,10 +108,14 @@ function App() {
             loggedIn={loggedIn}
             isNavMenuOpen={isNavMenuOpen}
             onNavMenuOpen={handleNavMenuOpen}
+            isLoading={isLoading}
             onClose={closeAllPopup}
-            movies={movies}
+            savedMovies={savedMovies}
             onAddMovies={handleAddMovies}
             isMoviesListExcess={isMoviesListExcess}
+            isCheckedShortFilm={isCheckedShortFilm}
+            onCheckedShortFilm={handleCheckedShortFilm}
+            onSubmit={handleSearchSubmit}
           ></SavedMovies>
         </Route>
         <Route path="/profile">

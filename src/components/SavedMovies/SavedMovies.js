@@ -4,8 +4,25 @@ import "./SavedMovies.css";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Header from "../Header/Header";
+import SearchForm from "../SearchForm/SearchForm";
+import Preloader from "../Preloader/Preloader";
+import Footer from "../Footer/Footer";
 
-function SavedMovies({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
+function SavedMovies({
+  loggedIn,
+  isNavMenuOpen,
+  onNavMenuOpen,
+  isLoading,
+  savedMovies,
+  onAddMovies,
+  isMoviesListExcess,
+  onClose,
+  isCheckedShortFilm,
+  onCheckedShortFilm,
+  onSubmit,
+}) {
+  isMoviesListExcess = true;
+
   return (
     <>
       <Header
@@ -13,10 +30,26 @@ function SavedMovies({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-        isMainPlace={true}
       ></Header>
-      {/*<MoviesCardList></MoviesCardList>
-      <MoviesCard></MoviesCard>*/}
+      <main className="main">
+        <SearchForm
+          isChecked={isCheckedShortFilm}
+          onChangeCheckbox={onCheckedShortFilm}
+          onSubmit={onSubmit}
+        ></SearchForm>
+        {isLoading ? (
+          <Preloader></Preloader>
+        ) : (
+          <MoviesCardList
+            movies={savedMovies}
+            savedMovies={savedMovies}
+            onAddMovies={onAddMovies}
+            isMoviesListExcess={isMoviesListExcess}
+            isPlaceSavedMovies={true}
+          ></MoviesCardList>
+        )}
+      </main>
+      <Footer></Footer>
     </>
   );
 }
