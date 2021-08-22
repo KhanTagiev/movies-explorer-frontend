@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
@@ -8,13 +8,15 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
+import PageNotFound from "../PageNotFound/PageNotFound";
 import moviesDataBase from "../../utils/movies_data";
 
 function App() {
+  const history = useHistory();
   const [moviesData, setMoviesData] = React.useState([]);
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
   const [moviesCount, setMoviesCount] = React.useState(0);
@@ -24,7 +26,7 @@ function App() {
 
   React.useEffect(() => {
     setMoviesData(moviesDataBase);
-    setMoviesCount(12);
+    setMoviesCount(3);
     setMoviesLength(12);
     setSavedMovies(moviesDataBase.slice(0, 3));
   }, []);
@@ -131,6 +133,9 @@ function App() {
         </Route>
         <Route path="/signup">
           <Register></Register>
+        </Route>
+        <Route path="*">
+          <PageNotFound history={history} />
         </Route>
       </Switch>
     </div>

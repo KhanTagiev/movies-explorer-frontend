@@ -2,7 +2,6 @@ import React from "react";
 
 import "./SavedMovies.css";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import MoviesCard from "../MoviesCard/MoviesCard";
 import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
