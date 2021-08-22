@@ -14,7 +14,7 @@ function App() {
   const [moviesData, setMoviesData] = React.useState([]);
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
   const [moviesCount, setMoviesCount] = React.useState(0);

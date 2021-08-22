@@ -35,7 +35,7 @@ function Profile({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
                     className="profile-form__input profile-form__input_name"
                     type="text"
                     value={name}
-                    placeholder="Имя"
+                    placeholder=""
                     name="profile-name"
                     minLength="2"
                     maxLength="40"
@@ -47,10 +47,10 @@ function Profile({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
                 <label className="profile-form__label">
                   <span className="profile-form__label-text">E-mail</span>
                   <input
-                    className="profile-form__input profile-form__input_name"
+                    className="profile-form__input profile-form__input_email"
                     type="email"
                     value={email}
-                    placeholder="Email"
+                    placeholder=""
                     name="profile-email"
                     minLength="2"
                     maxLength="40"

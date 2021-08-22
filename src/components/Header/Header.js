@@ -16,7 +16,7 @@ function Header({
     <header className={`header ${isMainPlace ? "header_place_main" : ""}`}>
       <div className="header__container">
         <Link to="/" className="header__logo">
-          <img src={logoIcon} alt="Логотип" />
+          <img className="header__image" src={logoIcon} alt="Логотип" />
         </Link>
         {loggedIn ? (
           <Navigation
