@@ -16,7 +16,7 @@ function App() {
   const [moviesData, setMoviesData] = React.useState([]);
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
   const [moviesCount, setMoviesCount] = React.useState(0);
@@ -25,6 +25,7 @@ function App() {
   const [isCheckedShortFilm, setCheckedShortFilm] = React.useState(false);
 
   React.useEffect(() => {
+    setLoggedIn(true)
     setMoviesData(moviesDataBase);
     setMoviesCount(3);
     setMoviesLength(12);
@@ -36,8 +37,16 @@ function App() {
   }, [moviesData, moviesLength]);
 
   React.useEffect(() => {
+    function checkMoviesListExcess() {
+      if (movies.length < moviesData.length) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
     setMoviesListExcess(checkMoviesListExcess);
-  }, [movies]);
+  }, [movies, moviesData]);
 
   function handleNavMenuOpen() {
     setNavMenuOpen(true);
@@ -60,13 +69,7 @@ function App() {
     setMoviesLength(moviesLength + moviesCount);
   }
 
-  function checkMoviesListExcess() {
-    if (movies.length < moviesData.length) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+
 
   function handleCheckedShortFilm() {
     if (!isCheckedShortFilm) {
