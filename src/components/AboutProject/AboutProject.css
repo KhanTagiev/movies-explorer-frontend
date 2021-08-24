@@ -1,0 +1,120 @@
+.about-project__container {
+  padding: 110px 0;
+}
+
+.about-project__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  list-style: none;
+  gap: 40px;
+  margin: 70px 0 110px;
+  padding: 0;
+}
+
+.about-project__list-title {
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  margin: 0 0 25px;
+}
+
+.about-project__list-description {
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.about-project__progress-line {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) 4fr;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-project__progress-line-week {
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  padding: 10px;
+  margin: 0 0 15px;
+}
+
+.about-project__progress-line-week_work_backend {
+  background-color: #3ddc84;
+}
+
+.about-project__progress-line-week_work_frontend {
+  color: #ffffff;
+  background-color: #303030;
+}
+
+.about-project__progress-line-description {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8b8b8b;
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .about-project__container {
+    padding: 90px 0;
+  }
+
+  .about-project__list {
+    gap: 30px;
+    margin-bottom: 90px;
+  }
+
+  .about-project__list-description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-project__progress-line-description {
+    font-weight: normal;
+    color: #a0a0a0;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-project__container {
+    padding: 70px 0;
+  }
+
+  .about-project__list {
+    grid-template-columns: 1fr;
+    gap: 55px;
+    margin: 60px 0;
+  }
+
+  .about-project__list-title {
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 17px;
+  }
+
+  .about-project__list-description {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-project__progress-line {
+    grid-template-columns: minmax(100px, 1fr) 4fr;
+  }
+
+  .about-project__progress-line-week {
+    font-size: 11px;
+    line-height: 13px;
+    margin-bottom: 10px;
+  }
+
+  .about-project__progress-line-description {
+    font-size: 11px;
+    line-height: 13px;
+  }
+}
