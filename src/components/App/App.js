@@ -9,7 +9,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import PageNotFound from "../PageNotFound/PageNotFound";
-import moviesDataBase from "../../utils/movies_data";
+import * as moviesApi from "../../utils/moviesApi";
 
 function App() {
   const history = useHistory();
@@ -25,11 +25,19 @@ function App() {
   const [isCheckedShortFilm, setCheckedShortFilm] = React.useState(false);
 
   React.useEffect(() => {
-    setLoggedIn(true)
-    setMoviesData(moviesDataBase);
+    setLoggedIn(true);
+
     setMoviesCount(3);
     setMoviesLength(12);
     setSavedMovies(moviesDataBase.slice(0, 3));
+    moviesApi
+      .getMovies()
+      .then((movies) => {
+        setMoviesData(movies);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   React.useEffect(() => {
@@ -69,14 +77,12 @@ function App() {
     setMoviesLength(moviesLength + moviesCount);
   }
 
-
-
   function handleCheckedShortFilm() {
     if (!isCheckedShortFilm) {
       const moviesShorts = moviesData.filter((movie) => movie.duration <= 40);
       setMoviesData(moviesShorts);
     } else {
-      setMoviesData(moviesDataBase);
+      setMoviesData(moviesData);
     }
     setCheckedShortFilm(!isCheckedShortFilm);
   }
