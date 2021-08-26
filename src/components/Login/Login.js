@@ -4,7 +4,7 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import logoIcon from "../../images/icons/logo.svg";
 
-function Login() {
+function Login({ handleSignIn }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -16,6 +16,11 @@ function Login() {
     setPassword(e.target.value);
   }
 
+  function handleSubmitForm(e) {
+    e.preventDefault();
+    handleSignIn(email, password);
+  }
+
   return (
     <main className="main">
       <section className="register">
@@ -24,7 +29,7 @@ function Login() {
             <img className="header__image" src={logoIcon} alt="Логотип" />
           </Link>
           <h2 className="register__title">Рады видеть!</h2>
-          <form className="register__form">
+          <form className="register__form" onSubmit={handleSubmitForm}>
             <fieldset className="register__fieldset">
               <label className="register__label">
                 <span className="register__label-text">E-mail</span>

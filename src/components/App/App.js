@@ -9,7 +9,10 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import PageNotFound from "../PageNotFound/PageNotFound";
+import * as mainApi from "../../utils/mainApi";
 import * as moviesApi from "../../utils/moviesApi";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import InfoTooltipPopup from "../InfoTooltipPopup/InfoTooltipPopup";
 
 function App() {
   const history = useHistory();
@@ -23,22 +26,38 @@ function App() {
   const [moviesLength, setMoviesLength] = React.useState(0);
   const [isMoviesListExcess, setMoviesListExcess] = React.useState(false);
   const [isCheckedShortFilm, setCheckedShortFilm] = React.useState(false);
+  const [status, setStatus] = React.useState({
+    isSuccess: false,
+    message: "Что-то пошло не так! Попробуйте ещё раз.",
+  });
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
+    React.useState(false);
 
   React.useEffect(() => {
-    setLoggedIn(true);
-
-    setMoviesCount(3);
-    setMoviesLength(12);
-    setSavedMovies(moviesDataBase.slice(0, 3));
-    moviesApi
-      .getMovies()
-      .then((movies) => {
-        setMoviesData(movies);
+    mainApi
+      .getProfile()
+      .then((user) => {
+        setLoggedIn(true);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      setMoviesCount(3);
+      setMoviesLength(12);
+      moviesApi
+        .getMovies()
+        .then((movies) => {
+          setMoviesData(movies);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   React.useEffect(() => {
     setMovies(moviesData.slice(0, moviesLength));
@@ -56,12 +75,75 @@ function App() {
     setMoviesListExcess(checkMoviesListExcess);
   }, [movies, moviesData]);
 
+  function handleCheckToken() {
+    mainApi
+      .getProfile()
+      .then((user) => {
+        setLoggedIn(true);
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleSignUp(email, password, name) {
+    mainApi
+      .signUp(email, password, name)
+      .then((data) => {
+        setStatus({
+          isSuccess: true,
+          message: "Вы успешно зарегистрировались!",
+        });
+        setIsInfoTooltipPopupOpen(true);
+        history.push("/signin");
+      })
+      .catch((err) => {
+        setStatus({
+          isSuccess: false,
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
+
+  function handleSignIn(email, password) {
+    mainApi
+      .signIn(email, password)
+      .then((data) => {
+        handleCheckToken();
+      })
+      .catch((err) => {
+        setStatus({
+          isSuccess: false,
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
+
+  function handleSignOut() {
+    mainApi
+      .signOut()
+      .then((data) => {
+        handleCheckToken();
+      })
+      .catch((err) => {
+        setStatus({
+          isSuccess: false,
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
+
   function handleNavMenuOpen() {
     setNavMenuOpen(true);
   }
 
   function closeAllPopup() {
     setNavMenuOpen(false);
+    setIsInfoTooltipPopupOpen(false);
   }
 
   function handleSearchSubmit(keyword) {
@@ -98,55 +180,63 @@ function App() {
             onClose={closeAllPopup}
           ></Main>
         </Route>
-        <Route path="/movies">
-          <Movies
-            loggedIn={loggedIn}
-            isNavMenuOpen={isNavMenuOpen}
-            isLoading={isLoading}
-            onNavMenuOpen={handleNavMenuOpen}
-            onClose={closeAllPopup}
-            onSubmit={handleSearchSubmit}
-            movies={movies}
-            savedMovies={savedMovies}
-            onAddMovies={handleAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
-            isCheckedShortFilm={isCheckedShortFilm}
-            onCheckedShortFilm={handleCheckedShortFilm}
-          ></Movies>
-        </Route>
-        <Route path="/saved-movies">
-          <SavedMovies
-            loggedIn={loggedIn}
-            isNavMenuOpen={isNavMenuOpen}
-            onNavMenuOpen={handleNavMenuOpen}
-            isLoading={isLoading}
-            onClose={closeAllPopup}
-            savedMovies={savedMovies}
-            onAddMovies={handleAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
-            isCheckedShortFilm={isCheckedShortFilm}
-            onCheckedShortFilm={handleCheckedShortFilm}
-            onSubmit={handleSearchSubmit}
-          ></SavedMovies>
-        </Route>
-        <Route path="/profile">
-          <Profile
-            loggedIn={loggedIn}
-            isNavMenuOpen={isNavMenuOpen}
-            onNavMenuOpen={handleNavMenuOpen}
-            onClose={closeAllPopup}
-          ></Profile>
-        </Route>
+        <ProtectedRoute
+          path="/movies"
+          component={Movies}
+          loggedIn={loggedIn}
+          isNavMenuOpen={isNavMenuOpen}
+          isLoading={isLoading}
+          onNavMenuOpen={handleNavMenuOpen}
+          onClose={closeAllPopup}
+          onSubmit={handleSearchSubmit}
+          movies={movies}
+          savedMovies={savedMovies}
+          onAddMovies={handleAddMovies}
+          isMoviesListExcess={isMoviesListExcess}
+          isCheckedShortFilm={isCheckedShortFilm}
+          onCheckedShortFilm={handleCheckedShortFilm}
+        ></ProtectedRoute>
+        <ProtectedRoute
+          path="/saved-movies"
+          component={SavedMovies}
+          loggedIn={loggedIn}
+          isNavMenuOpen={isNavMenuOpen}
+          onNavMenuOpen={handleNavMenuOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopup}
+          savedMovies={savedMovies}
+          onAddMovies={handleAddMovies}
+          isMoviesListExcess={isMoviesListExcess}
+          isCheckedShortFilm={isCheckedShortFilm}
+          onCheckedShortFilm={handleCheckedShortFilm}
+          onSubmit={handleSearchSubmit}
+        ></ProtectedRoute>
+        <ProtectedRoute
+          path="/profile"
+          component={Profile}
+          loggedIn={loggedIn}
+          isNavMenuOpen={isNavMenuOpen}
+          onNavMenuOpen={handleNavMenuOpen}
+          handleSignOut={handleSignOut}
+          onClose={closeAllPopup}
+        ></ProtectedRoute>
         <Route path="/signin">
-          <Login></Login>
+          <Login handleSignIn={handleSignIn}></Login>
         </Route>
         <Route path="/signup">
-          <Register></Register>
+          <Register handleSignUp={handleSignUp}></Register>
         </Route>
         <Route path="*">
           <PageNotFound history={history} />
         </Route>
       </Switch>
+      <InfoTooltipPopup
+        isOpen={isInfoTooltipPopupOpen}
+        status={status}
+        onClose={closeAllPopup}
+      >
+        {" "}
+      </InfoTooltipPopup>
     </div>
   );
 }

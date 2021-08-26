@@ -4,7 +4,7 @@ import "./Register.css";
 import logoIcon from "../../images/icons/logo.svg";
 import { Link } from "react-router-dom";
 
-function Register() {
+function Register({ handleSignUp }) {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -21,6 +21,14 @@ function Register() {
     setPassword(e.target.value);
   }
 
+  function handleSubmitForm(e) {
+    e.preventDefault();
+    if (!email || !password || !name) {
+      return;
+    }
+    handleSignUp(email, password, name);
+  }
+
   return (
     <main className="main">
       <section className="register">
@@ -29,7 +37,7 @@ function Register() {
             <img className="header__image" src={logoIcon} alt="Логотип" />
           </Link>
           <h2 className="register__title">Добро пожаловать!</h2>
-          <form className="register__form">
+          <form className="register__form" onSubmit={handleSubmitForm}>
             <fieldset className="register__fieldset">
               <label className="register__label">
                 <span className="register__label-text">Имя</span>

@@ -3,7 +3,13 @@ import React from "react";
 import "./Profile.css";
 import Header from "../Header/Header";
 
-function Profile({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
+function Profile({
+  loggedIn,
+  isNavMenuOpen,
+  onNavMenuOpen,
+  handleSignOut,
+  onClose,
+}) {
   const [name, setName] = React.useState("Хан");
   const [email, setEmail] = React.useState("pochta@yandex.ru");
 
@@ -72,6 +78,7 @@ function Profile({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
               className="profile__btn"
               type="button"
               aria-label="Сохранить"
+              onClick={handleSignOut}
             >
               Выйти из аккаунта
             </button>
