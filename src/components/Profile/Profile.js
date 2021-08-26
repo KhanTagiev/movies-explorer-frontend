@@ -2,6 +2,7 @@ import React from "react";
 
 import "./Profile.css";
 import Header from "../Header/Header";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function Profile({
   loggedIn,
@@ -10,8 +11,14 @@ function Profile({
   handleSignOut,
   onClose,
 }) {
-  const [name, setName] = React.useState("Хан");
-  const [email, setEmail] = React.useState("pochta@yandex.ru");
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const currentUser = React.useContext(CurrentUserContext);
+
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]);
 
   function handleChangeName(e) {
     setName(e.target.value);
@@ -32,7 +39,7 @@ function Profile({
       <main className="main">
         <section className="profile section">
           <div className="profile__container section__container">
-            <h1 className="profile__title">Привет, Виталий!</h1>
+            <h1 className="profile__title">Привет, {currentUser.name}!</h1>
             <form className="profile-form">
               <fieldset className="profile-form__fieldset">
                 <label className="profile-form__label">

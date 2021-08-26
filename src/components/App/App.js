@@ -13,9 +13,15 @@ import * as mainApi from "../../utils/mainApi";
 import * as moviesApi from "../../utils/moviesApi";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import InfoTooltipPopup from "../InfoTooltipPopup/InfoTooltipPopup";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function App() {
   const history = useHistory();
+  const [currentUser, setCurrentUser] = React.useState({
+    name: "",
+    email: "",
+    _id: "",
+  });
   const [moviesData, setMoviesData] = React.useState([]);
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
@@ -38,6 +44,7 @@ function App() {
       .getProfile()
       .then((user) => {
         setLoggedIn(true);
+        setCurrentUser(user);
       })
       .catch((err) => {
         console.log(err);
@@ -79,6 +86,7 @@ function App() {
     mainApi
       .getProfile()
       .then((user) => {
+        setCurrentUser(user);
         setLoggedIn(true);
         history.push("/");
       })
@@ -170,74 +178,76 @@ function App() {
   }
 
   return (
-    <div className="page">
-      <Switch>
-        <Route exact path="/">
-          <Main
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="page">
+        <Switch>
+          <Route exact path="/">
+            <Main
+              loggedIn={loggedIn}
+              isNavMenuOpen={isNavMenuOpen}
+              onNavMenuOpen={handleNavMenuOpen}
+              onClose={closeAllPopup}
+            ></Main>
+          </Route>
+          <ProtectedRoute
+            path="/movies"
+            component={Movies}
+            loggedIn={loggedIn}
+            isNavMenuOpen={isNavMenuOpen}
+            isLoading={isLoading}
+            onNavMenuOpen={handleNavMenuOpen}
+            onClose={closeAllPopup}
+            onSubmit={handleSearchSubmit}
+            movies={movies}
+            savedMovies={savedMovies}
+            onAddMovies={handleAddMovies}
+            isMoviesListExcess={isMoviesListExcess}
+            isCheckedShortFilm={isCheckedShortFilm}
+            onCheckedShortFilm={handleCheckedShortFilm}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/saved-movies"
+            component={SavedMovies}
             loggedIn={loggedIn}
             isNavMenuOpen={isNavMenuOpen}
             onNavMenuOpen={handleNavMenuOpen}
+            isLoading={isLoading}
             onClose={closeAllPopup}
-          ></Main>
-        </Route>
-        <ProtectedRoute
-          path="/movies"
-          component={Movies}
-          loggedIn={loggedIn}
-          isNavMenuOpen={isNavMenuOpen}
-          isLoading={isLoading}
-          onNavMenuOpen={handleNavMenuOpen}
+            savedMovies={savedMovies}
+            onAddMovies={handleAddMovies}
+            isMoviesListExcess={isMoviesListExcess}
+            isCheckedShortFilm={isCheckedShortFilm}
+            onCheckedShortFilm={handleCheckedShortFilm}
+            onSubmit={handleSearchSubmit}
+          ></ProtectedRoute>
+          <ProtectedRoute
+            path="/profile"
+            component={Profile}
+            loggedIn={loggedIn}
+            isNavMenuOpen={isNavMenuOpen}
+            onNavMenuOpen={handleNavMenuOpen}
+            handleSignOut={handleSignOut}
+            onClose={closeAllPopup}
+          ></ProtectedRoute>
+          <Route path="/signin">
+            <Login handleSignIn={handleSignIn}></Login>
+          </Route>
+          <Route path="/signup">
+            <Register handleSignUp={handleSignUp}></Register>
+          </Route>
+          <Route path="*">
+            <PageNotFound history={history} />
+          </Route>
+        </Switch>
+        <InfoTooltipPopup
+          isOpen={isInfoTooltipPopupOpen}
+          status={status}
           onClose={closeAllPopup}
-          onSubmit={handleSearchSubmit}
-          movies={movies}
-          savedMovies={savedMovies}
-          onAddMovies={handleAddMovies}
-          isMoviesListExcess={isMoviesListExcess}
-          isCheckedShortFilm={isCheckedShortFilm}
-          onCheckedShortFilm={handleCheckedShortFilm}
-        ></ProtectedRoute>
-        <ProtectedRoute
-          path="/saved-movies"
-          component={SavedMovies}
-          loggedIn={loggedIn}
-          isNavMenuOpen={isNavMenuOpen}
-          onNavMenuOpen={handleNavMenuOpen}
-          isLoading={isLoading}
-          onClose={closeAllPopup}
-          savedMovies={savedMovies}
-          onAddMovies={handleAddMovies}
-          isMoviesListExcess={isMoviesListExcess}
-          isCheckedShortFilm={isCheckedShortFilm}
-          onCheckedShortFilm={handleCheckedShortFilm}
-          onSubmit={handleSearchSubmit}
-        ></ProtectedRoute>
-        <ProtectedRoute
-          path="/profile"
-          component={Profile}
-          loggedIn={loggedIn}
-          isNavMenuOpen={isNavMenuOpen}
-          onNavMenuOpen={handleNavMenuOpen}
-          handleSignOut={handleSignOut}
-          onClose={closeAllPopup}
-        ></ProtectedRoute>
-        <Route path="/signin">
-          <Login handleSignIn={handleSignIn}></Login>
-        </Route>
-        <Route path="/signup">
-          <Register handleSignUp={handleSignUp}></Register>
-        </Route>
-        <Route path="*">
-          <PageNotFound history={history} />
-        </Route>
-      </Switch>
-      <InfoTooltipPopup
-        isOpen={isInfoTooltipPopupOpen}
-        status={status}
-        onClose={closeAllPopup}
-      >
-        {" "}
-      </InfoTooltipPopup>
-    </div>
+        >
+          {" "}
+        </InfoTooltipPopup>
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 
