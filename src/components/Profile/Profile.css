@@ -31,7 +31,7 @@
   display: flex;
   justify-content: space-between;
   position: relative;
-  padding: 17px 0 14px;
+  padding: 17px 0 13px;
   width: 410px;
   border-top: #424242 1px solid;
 }
@@ -53,10 +53,15 @@
   line-height: 13px;
   text-align: right;
   color: #ffffff;
+  border-bottom: transparent 1px solid;
+}
+
+.profile-form__input:hover {
+  border-color: white;
 }
 
 .profile-form__input:focus-visible {
-  outline-color: #ffffff;
+  outline: none;
 }
 
 .profile-form__input-error {

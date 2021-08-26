@@ -9,6 +9,7 @@ function Profile({
   isNavMenuOpen,
   onNavMenuOpen,
   handleSignOut,
+  handleUpdateProfile,
   onClose,
 }) {
   const [name, setName] = React.useState("");
@@ -28,6 +29,11 @@ function Profile({
     setEmail(e.target.value);
   }
 
+  function handleSubmitForm(e) {
+    e.preventDefault();
+    handleUpdateProfile(name, email);
+  }
+
   return (
     <>
       <Header
@@ -40,7 +46,7 @@ function Profile({
         <section className="profile section">
           <div className="profile__container section__container">
             <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-            <form className="profile-form">
+            <form className="profile-form" onSubmit={handleSubmitForm}>
               <fieldset className="profile-form__fieldset">
                 <label className="profile-form__label">
                   <span className="profile-form__label-text">Имя</span>
@@ -51,7 +57,7 @@ function Profile({
                     placeholder=""
                     name="profile-name"
                     minLength="2"
-                    maxLength="40"
+                    maxLength="30"
                     required
                     onChange={handleChangeName}
                   />
@@ -66,7 +72,7 @@ function Profile({
                     placeholder=""
                     name="profile-email"
                     minLength="2"
-                    maxLength="40"
+                    maxLength="30"
                     required
                     onChange={handleChangeEmail}
                   />

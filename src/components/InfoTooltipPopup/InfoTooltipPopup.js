@@ -41,12 +41,7 @@ function InfoTooltipPopup({ isOpen, onClose, status }) {
           src={status.isSuccess ? success : error}
           alt={status.isSuccess ? "Успешно" : "Ошибка"}
         />
-        <p className="popup__info-text">
-          {status.message}
-          {status.message
-            ? "Вы успешно зарегистрировались!"
-            : "Что-то пошло не так! Попробуйте ещё раз."}
-        </p>
+        <p className="popup__info-text">{status.message}</p>
         <button
           className="popup__btn popup__btn_close"
           type="button"

@@ -48,3 +48,14 @@ export const getProfile = () => {
     credentials: "include",
   }).then((res) => handleCheckResponse(res));
 };
+
+export const updateProfile = (name, email) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ name, email }),
+  }).then((res) => handleCheckResponse(res));
+};

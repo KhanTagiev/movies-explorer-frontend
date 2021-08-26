@@ -145,6 +145,26 @@ function App() {
       });
   }
 
+  function handleUpdateProfile(name, email) {
+    mainApi
+      .updateProfile(name, email)
+      .then((user) => {
+        setCurrentUser(user);
+        setStatus({
+          isSuccess: true,
+          message: "Профиль успешно обновлен!",
+        });
+        setIsInfoTooltipPopupOpen(true);
+      })
+      .catch((err) => {
+        setStatus({
+          isSuccess: false,
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
+
   function handleNavMenuOpen() {
     setNavMenuOpen(true);
   }
@@ -227,6 +247,7 @@ function App() {
             isNavMenuOpen={isNavMenuOpen}
             onNavMenuOpen={handleNavMenuOpen}
             handleSignOut={handleSignOut}
+            handleUpdateProfile={handleUpdateProfile}
             onClose={closeAllPopup}
           ></ProtectedRoute>
           <Route path="/signin">
@@ -243,9 +264,7 @@ function App() {
           isOpen={isInfoTooltipPopupOpen}
           status={status}
           onClose={closeAllPopup}
-        >
-          {" "}
-        </InfoTooltipPopup>
+        ></InfoTooltipPopup>
       </div>
     </CurrentUserContext.Provider>
   );
