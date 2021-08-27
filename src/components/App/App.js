@@ -88,14 +88,14 @@ function App() {
       .then((user) => {
         setCurrentUser(user);
         setLoggedIn(true);
-        history.push("/");
+        history.push("/movies");
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  function handleSignUp(email, password, name) {
+  function handleSignUp({ email, password, name }, resetForm) {
     mainApi
       .signUp(email, password, name)
       .then((data) => {
@@ -104,7 +104,7 @@ function App() {
           message: "Вы успешно зарегистрировались!",
         });
         setIsInfoTooltipPopupOpen(true);
-        history.push("/signin");
+        handleSignIn({ email, password }, resetForm);
       })
       .catch((err) => {
         setStatus({
@@ -115,10 +115,11 @@ function App() {
       });
   }
 
-  function handleSignIn(email, password) {
+  function handleSignIn({ email, password }, resetForm) {
     mainApi
       .signIn(email, password)
       .then((data) => {
+        resetForm();
         handleCheckToken();
       })
       .catch((err) => {
@@ -134,7 +135,13 @@ function App() {
     mainApi
       .signOut()
       .then((data) => {
-        handleCheckToken();
+        setLoggedIn(false);
+        setCurrentUser({
+          name: "",
+          email: "",
+          _id: "",
+        });
+        history.push("/");
       })
       .catch((err) => {
         setStatus({
@@ -145,7 +152,7 @@ function App() {
       });
   }
 
-  function handleUpdateProfile(name, email) {
+  function handleUpdateProfile({ name, email }) {
     mainApi
       .updateProfile(name, email)
       .then((user) => {

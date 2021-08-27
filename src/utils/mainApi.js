@@ -36,7 +36,13 @@ export const signOut = () => {
       "Content-Type": "application/json",
     },
     credentials: "include",
-  }).then((res) => handleCheckResponse(res));
+  }).then((res) => {
+    if (res.ok) {
+      return res;
+    } else {
+      return Promise.reject(`Ошибка ${res.status}`);
+    }
+  });
 };
 
 export const getProfile = () => {

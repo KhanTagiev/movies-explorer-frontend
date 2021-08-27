@@ -85,7 +85,7 @@
   line-height: 12px;
   color: #ee3465;
   position: absolute;
-  bottom: 6px;
+  top: 46px;
   left: 0;
 }
 
@@ -116,6 +116,11 @@
 
 .register__btn:active {
   transform: scale(0.95);
+}
+
+.register__btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 .register__link-container {
   display: flex;

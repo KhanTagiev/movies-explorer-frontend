@@ -3,6 +3,7 @@ import React from "react";
 import "./Profile.css";
 import Header from "../Header/Header";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Profile({
   loggedIn,
@@ -12,26 +13,13 @@ function Profile({
   handleUpdateProfile,
   onClose,
 }) {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
   const currentUser = React.useContext(CurrentUserContext);
+  const { values, handleChange, errors, isValid } = useFormAndValidation();
+  const { name = currentUser.name, email = currentUser.email } = values;
 
-  React.useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser]);
-
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
-
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-  }
-
-  function handleSubmitForm(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    handleUpdateProfile(name, email);
+    isValid && handleUpdateProfile({ name, email });
   }
 
   return (
@@ -46,7 +34,12 @@ function Profile({
         <section className="profile section">
           <div className="profile__container section__container">
             <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-            <form className="profile-form" onSubmit={handleSubmitForm}>
+            <form
+              className="profile-form"
+              name="profile__form"
+              onSubmit={handleSubmit}
+              noValidate
+            >
               <fieldset className="profile-form__fieldset">
                 <label className="profile-form__label">
                   <span className="profile-form__label-text">Имя</span>
@@ -54,14 +47,16 @@ function Profile({
                     className="profile-form__input profile-form__input_name"
                     type="text"
                     value={name}
-                    placeholder=""
-                    name="profile-name"
+                    placeholder="Имя"
+                    name="name"
                     minLength="2"
                     maxLength="30"
                     required
-                    onChange={handleChangeName}
+                    onChange={handleChange}
                   />
-                  <span className="profile-form__input-error profile-name-error"></span>
+                  <span className="profile-form__input-error">
+                    {errors.name}
+                  </span>
                 </label>
                 <label className="profile-form__label">
                   <span className="profile-form__label-text">E-mail</span>
@@ -69,19 +64,23 @@ function Profile({
                     className="profile-form__input profile-form__input_email"
                     type="email"
                     value={email}
-                    placeholder=""
-                    name="profile-email"
+                    placeholder="Email"
+                    name="email"
                     minLength="2"
                     maxLength="30"
                     required
-                    onChange={handleChangeEmail}
+                    onChange={handleChange}
                   />
-                  <span className="profile-form__input-error profile-email-error"></span>
+                  <span className="profile-form__input-error">
+                    {errors.email}
+                  </span>
                 </label>
                 <button
                   className="profile-form__btn"
                   type="submit"
                   aria-label="Сохранить"
+                  onClick={handleSubmit}
+                  disabled={!isValid}
                 >
                   Редактировать
                 </button>
