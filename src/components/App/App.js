@@ -4,7 +4,6 @@ import { Route, Switch, useHistory } from "react-router-dom";
 
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
-import SavedMovies from "../SavedMovies/SavedMovies";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
@@ -22,65 +21,85 @@ function App() {
     email: "",
     _id: "",
   });
-  const [moviesData, setMoviesData] = React.useState([]);
-  const [movies, setMovies] = React.useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(
+    JSON.parse(localStorage.getItem("loggedIn")) || false
+  );
+
+  const [moviesData, setMoviesData] = React.useState(
+    JSON.parse(localStorage.getItem("moviesDB")) || []
+  );
+  const [moviesSearched, setMoviesSearched] = React.useState(
+    JSON.parse(localStorage.getItem("isCheckedShortFilm"))
+      ? JSON.parse(localStorage.getItem("moviesSearchedShorts"))
+      : JSON.parse(localStorage.getItem("moviesSearched")) || []
+  );
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
+
+  const [isWasRequest, setIsWasRequest] = React.useState(
+    JSON.parse(localStorage.getItem("isWasRequest")) || false
+  );
+  const [keyword, setKeyword] = React.useState(
+    JSON.parse(localStorage.getItem("keyword")) || ""
+  );
+  const [isCheckedShortFilm, setCheckedShortFilm] = React.useState(
+    JSON.parse(localStorage.getItem("isCheckedShortFilm")) || false
+  );
+
   const [isLoading, setLoading] = React.useState(false);
-  const [moviesCount, setMoviesCount] = React.useState(0);
-  const [moviesLength, setMoviesLength] = React.useState(0);
-  const [isMoviesListExcess, setMoviesListExcess] = React.useState(false);
-  const [isCheckedShortFilm, setCheckedShortFilm] = React.useState(false);
+  const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
+    React.useState(false);
   const [status, setStatus] = React.useState({
     isSuccess: false,
     message: "Что-то пошло не так! Попробуйте ещё раз.",
   });
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
-    React.useState(false);
 
   React.useEffect(() => {
     mainApi
       .getProfile()
       .then((user) => {
         setLoggedIn(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
         setCurrentUser(user);
       })
       .catch((err) => {
         console.log(err);
+        localStorage.removeItem("loggedIn");
       });
   }, []);
 
   React.useEffect(() => {
     if (loggedIn) {
-      setMoviesCount(3);
-      setMoviesLength(12);
-      moviesApi
-        .getMovies()
-        .then((movies) => {
-          setMoviesData(movies);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (moviesData.length === 0) {
+        moviesApi
+          .getMovies()
+          .then((movies) => {
+            setMoviesData(movies);
+            localStorage.setItem("moviesDB", JSON.stringify(movies));
+          })
+          .catch((err) => {
+            console.log(err);
+            handleCleanLocalStorageAndStates();
+          });
+      }
     }
   }, [loggedIn]);
 
-  React.useEffect(() => {
-    setMovies(moviesData.slice(0, moviesLength));
-  }, [moviesData, moviesLength]);
-
-  React.useEffect(() => {
-    function checkMoviesListExcess() {
-      if (movies.length < moviesData.length) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-
-    setMoviesListExcess(checkMoviesListExcess);
-  }, [movies, moviesData]);
+  function handleCleanLocalStorageAndStates() {
+    localStorage.clear();
+    setLoggedIn(false);
+    setCurrentUser({
+      name: "",
+      email: "",
+      _id: "",
+    });
+    setMoviesData([]);
+    setMoviesSearched([]);
+    setIsWasRequest(false);
+    setKeyword("");
+    setCheckedShortFilm(false);
+    history.push("/");
+  }
 
   function handleCheckToken() {
     mainApi
@@ -88,10 +107,12 @@ function App() {
       .then((user) => {
         setCurrentUser(user);
         setLoggedIn(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
         history.push("/movies");
       })
       .catch((err) => {
         console.log(err);
+        localStorage.removeItem("loggedIn");
       });
   }
 
@@ -99,12 +120,11 @@ function App() {
     mainApi
       .signUp(email, password, name)
       .then((data) => {
-        setStatus({
-          isSuccess: true,
-          message: "Вы успешно зарегистрировались!",
-        });
-        setIsInfoTooltipPopupOpen(true);
-        handleSignIn({ email, password }, resetForm);
+        handleSignIn(
+          { email, password },
+          resetForm,
+          "Вы успешно зарегистрировались. Добро пожаловать!"
+        );
       })
       .catch((err) => {
         setStatus({
@@ -115,12 +135,19 @@ function App() {
       });
   }
 
-  function handleSignIn({ email, password }, resetForm) {
+  function handleSignIn({ email, password }, resetForm, successCustomMessage) {
     mainApi
       .signIn(email, password)
       .then((data) => {
         resetForm();
         handleCheckToken();
+        setStatus({
+          isSuccess: true,
+          message: successCustomMessage
+            ? successCustomMessage
+            : "С возвращением!",
+        });
+        setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
         setStatus({
@@ -135,13 +162,7 @@ function App() {
     mainApi
       .signOut()
       .then((data) => {
-        setLoggedIn(false);
-        setCurrentUser({
-          name: "",
-          email: "",
-          _id: "",
-        });
-        history.push("/");
+        handleCleanLocalStorageAndStates();
       })
       .catch((err) => {
         setStatus({
@@ -181,27 +202,52 @@ function App() {
     setIsInfoTooltipPopupOpen(false);
   }
 
-  function handleSearchSubmit(keyword) {
-    setLoading(true);
-    const moviesSearch = moviesData.filter((movie) =>
-      movie.nameRU.includes(keyword)
-    );
-    setMoviesData(moviesSearch);
-    setLoading(false);
+  function handleChangeSearchKeyword(e) {
+    setKeyword(e.target.value);
   }
 
-  function handleAddMovies() {
-    setMoviesLength(moviesLength + moviesCount);
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const moviesSearched = moviesData.filter((movie) => {
+      const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
+      return (
+        movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) ||
+        movie.description.toLowerCase().includes(keyword.toLowerCase()) ||
+        nameEN.toLowerCase().includes(keyword.toLowerCase())
+      );
+    });
+    const moviesSearchedShorts = moviesSearched.filter(
+      (movie) => movie.duration <= 40
+    );
+    setMoviesSearched(moviesSearched);
+    setLoading(false);
+    setIsWasRequest(true);
+    localStorage.setItem("keyword", JSON.stringify(keyword));
+    localStorage.setItem("moviesSearched", JSON.stringify(moviesSearched));
+    localStorage.setItem(
+      "moviesSearchedShorts",
+      JSON.stringify(moviesSearchedShorts)
+    );
+    localStorage.setItem("isWasRequest", JSON.stringify(true));
   }
 
   function handleCheckedShortFilm() {
+    setLoading(true);
     if (!isCheckedShortFilm) {
-      const moviesShorts = moviesData.filter((movie) => movie.duration <= 40);
-      setMoviesData(moviesShorts);
+      setMoviesSearched(
+        JSON.parse(localStorage.getItem("moviesSearchedShorts"))
+      );
     } else {
-      setMoviesData(moviesData);
+      setMoviesSearched(JSON.parse(localStorage.getItem("moviesSearched")));
     }
     setCheckedShortFilm(!isCheckedShortFilm);
+    localStorage.setItem(
+      "isCheckedShortFilm",
+      JSON.stringify(!isCheckedShortFilm)
+    );
+    setLoading(false);
   }
 
   return (
@@ -225,14 +271,15 @@ function App() {
             onNavMenuOpen={handleNavMenuOpen}
             onClose={closeAllPopup}
             onSubmit={handleSearchSubmit}
-            movies={movies}
+            movies={moviesSearched}
             savedMovies={savedMovies}
-            onAddMovies={handleAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
             isCheckedShortFilm={isCheckedShortFilm}
             onCheckedShortFilm={handleCheckedShortFilm}
+            isWasRequest={isWasRequest}
+            handleChangeSearchKeyword={handleChangeSearchKeyword}
+            keyword={keyword}
           ></ProtectedRoute>
-          <ProtectedRoute
+          {/* <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
             loggedIn={loggedIn}
@@ -241,12 +288,13 @@ function App() {
             isLoading={isLoading}
             onClose={closeAllPopup}
             savedMovies={savedMovies}
-            onAddMovies={handleAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
             isCheckedShortFilm={isCheckedShortFilm}
             onCheckedShortFilm={handleCheckedShortFilm}
             onSubmit={handleSearchSubmit}
-          ></ProtectedRoute>
+            isWasRequest={isWasRequest}
+            handleChangeSearchKeyword={handleChangeSearchKeyword}
+            keyword={keyword}
+          ></ProtectedRoute>*/}
           <ProtectedRoute
             path="/profile"
             component={Profile}

@@ -15,11 +15,12 @@ function Movies({
   onClose,
   onSubmit,
   movies,
-  onAddMovies,
-  isMoviesListExcess,
   isCheckedShortFilm,
   onCheckedShortFilm,
   savedMovies,
+  isWasRequest,
+  handleChangeSearchKeyword,
+  keyword,
 }) {
   return (
     <>
@@ -34,6 +35,9 @@ function Movies({
           isChecked={isCheckedShortFilm}
           onChangeCheckbox={onCheckedShortFilm}
           onSubmit={onSubmit}
+          handleChange={handleChangeSearchKeyword}
+          keyword={keyword}
+          isWasRequest={isWasRequest}
         ></SearchForm>
         {isLoading ? (
           <Preloader></Preloader>
@@ -41,8 +45,7 @@ function Movies({
           <MoviesCardList
             movies={movies}
             savedMovies={savedMovies}
-            onAddMovies={onAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
+            isWasRequest={isWasRequest}
           ></MoviesCardList>
         )}
       </main>

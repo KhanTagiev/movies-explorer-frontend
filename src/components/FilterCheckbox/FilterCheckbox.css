@@ -11,6 +11,10 @@
   margin: 0 0 0 12px;
 }
 
+.filter__text_disabled {
+  opacity: 0.6;
+}
+
 .filter__checkbox {
   position: relative;
   width: 36px;
@@ -20,6 +24,7 @@
   cursor: pointer;
   appearance: none;
   transition: background-color 0.2s ease-in-out;
+  box-sizing: border-box;
 }
 
 .filter__checkbox:checked {
@@ -45,6 +50,10 @@
 
 .filter__checkbox:checked::after {
   left: 18px;
+}
+
+.filter__checkbox:disabled {
+  opacity: 0.6;
 }
 
 @media (max-width: 600px) {

@@ -19,6 +19,7 @@ function SavedMovies({
   isCheckedShortFilm,
   onCheckedShortFilm,
   onSubmit,
+  isWasRequest,
 }) {
   isMoviesListExcess = true;
 
@@ -45,6 +46,7 @@ function SavedMovies({
             onAddMovies={onAddMovies}
             isMoviesListExcess={isMoviesListExcess}
             isPlaceSavedMovies={true}
+            isWasRequest={isWasRequest}
           ></MoviesCardList>
         )}
       </main>
