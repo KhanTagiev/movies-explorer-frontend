@@ -17,6 +17,7 @@ import {
 function MoviesCardList({
   movies,
   savedMovies,
+  isChecked,
   isPlaceSavedMovies,
   isWasRequest,
   handleMovieLike,
@@ -25,7 +26,18 @@ function MoviesCardList({
   const size = useResizeWindow();
   const [moviesCount, setMoviesCount] = React.useState(0);
   const [moviesAdd, setMoviesAdd] = React.useState(0);
+  const [movieFilter, setMovieFilter] = React.useState(movies);
 
+  console.log(movieFilter);
+
+  React.useEffect(() => {
+    if (isChecked) {
+      const moviesShorts = movies.filter((movie) => movie.duration <= 40);
+      setMovieFilter(moviesShorts);
+    } else {
+      setMovieFilter(movies);
+    }
+  }, [isChecked, movies]);
   React.useEffect(() => {
     if (size >= SCREEN_LARGE) {
       setMoviesCount(SCREEN_LARGE_MOVIES_COUNT);
@@ -48,11 +60,11 @@ function MoviesCardList({
   return (
     <section className={`movies section ${isWasRequest ? "" : "movies_hide"}`}>
       <div className="movies__container section__container">
-        {movies.length > 0 ? (
+        {movieFilter.length > 0 ? (
           <ul className="movies__list-container">
-            {movies.slice(0, moviesCount).map((movie) => (
+            {movieFilter.slice(0, moviesCount).map((movie) => (
               <MoviesCard
-                key={movie.id}
+                key={movie.id ? movie.id : movie._id}
                 movie={movie}
                 isPlaceSavedMovies={isPlaceSavedMovies}
                 savedMovies={savedMovies}

@@ -48,6 +48,7 @@ function Movies({
             movies={movies}
             savedMovies={savedMovies}
             isWasRequest={isWasRequest}
+            isChecked={isCheckedShortFilm}
             handleMovieLike={handleMovieLike}
             handleMovieDisLike={handleMovieDisLike}
           ></MoviesCardList>

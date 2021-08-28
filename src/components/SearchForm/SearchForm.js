@@ -32,7 +32,6 @@ function SearchForm({
                 maxLength="50"
                 value={keyword}
                 onChange={handleChange}
-                required
               />
               <span className="search__input-error"></span>
             </label>

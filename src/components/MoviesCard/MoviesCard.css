@@ -64,13 +64,13 @@
   transition: opacity 0.5s ease-out, transform 0.2s ease;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 7px;
   box-sizing: border-box;
 }
 
 .movies-card__btn_active {
   background-color: #ee3465;
   background-image: url("../../images/icons/saved.svg");
-  background-size: 8px 5px;
 }
 
 .movies-card__btn:hover {

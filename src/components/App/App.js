@@ -4,6 +4,7 @@ import { Route, Switch, useHistory } from "react-router-dom";
 
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
+import SavedMovies from "../SavedMovies/SavedMovies";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
@@ -29,25 +30,35 @@ function App() {
     JSON.parse(localStorage.getItem("moviesDB")) || []
   );
   const [moviesSearched, setMoviesSearched] = React.useState(
-    JSON.parse(localStorage.getItem("isCheckedShortFilm"))
-      ? JSON.parse(localStorage.getItem("moviesSearchedShorts"))
-      : JSON.parse(localStorage.getItem("moviesSearched")) || []
+    JSON.parse(localStorage.getItem("moviesSearched")) || []
   );
   const [savedMovies, setSavedMovies] = React.useState(
     JSON.parse(localStorage.getItem("savedMovies")) || []
   );
 
+  const [savedMoviesSearched, setSavedMoviesSearched] = React.useState(
+    JSON.parse(localStorage.getItem("savedMoviesSearched")) || []
+  );
   const [isWasRequest, setIsWasRequest] = React.useState(
     JSON.parse(localStorage.getItem("isWasRequest")) || false
+  );
+  const [isWasSavedRequest, setIsWasSavedRequest] = React.useState(
+    JSON.parse(localStorage.getItem("isWasSavedRequest")) || false
   );
   const [keyword, setKeyword] = React.useState(
     JSON.parse(localStorage.getItem("keyword")) || ""
   );
+  const [savedKeyword, setSavedKeyword] = React.useState(
+    JSON.parse(localStorage.getItem("savedKeyword")) || ""
+  );
   const [isCheckedShortFilm, setCheckedShortFilm] = React.useState(
     JSON.parse(localStorage.getItem("isCheckedShortFilm")) || false
   );
+  const [isSavedCheckedShortFilm, setSavedCheckedShortFilm] = React.useState(
+    JSON.parse(localStorage.getItem("isSavedCheckedShortFilm")) || false
+  );
 
-  const [isLoading, setLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [isNavMenuOpen, setNavMenuOpen] = React.useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
     React.useState(false);
@@ -73,6 +84,7 @@ function App() {
   React.useEffect(() => {
     if (loggedIn) {
       if (moviesData.length === 0) {
+        setIsLoading(true);
         moviesApi
           .getMovies()
           .then((movies) => {
@@ -82,9 +94,13 @@ function App() {
           })
           .catch((err) => {
             console.log(err);
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
       }
       if (savedMovies.length === 0) {
+        setIsLoading(true);
         mainApi
           .getMovies()
           .then((savedMovies) => {
@@ -94,6 +110,9 @@ function App() {
           })
           .catch((err) => {
             console.log(err);
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
       }
     }
@@ -113,6 +132,9 @@ function App() {
     setIsWasRequest(false);
     setKeyword("");
     setCheckedShortFilm(false);
+    setIsWasSavedRequest(false);
+    setSavedKeyword("");
+    setSavedCheckedShortFilm(false);
     history.push("/");
   }
 
@@ -224,9 +246,18 @@ function App() {
         nameEN: movie.nameEN ? movie.nameEN : movie.nameRU,
       })
       .then((newMovie) => {
-        const newSavedMovies = [newMovie, ...savedMovies];
+        const newSavedMovies = [...savedMovies, newMovie];
+        const newSavedMoviesSearched = handleMoviesKeywordFilter(
+          newSavedMovies,
+          savedKeyword
+        );
         setSavedMovies(newSavedMovies);
+        setSavedMoviesSearched(newSavedMoviesSearched);
         localStorage.setItem("savedMovies", JSON.stringify(newSavedMovies));
+        localStorage.setItem(
+          "savedMoviesSearched",
+          JSON.stringify(newSavedMoviesSearched)
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -234,17 +265,25 @@ function App() {
   }
 
   function handleMovieDisLike(movie) {
-    const deleteMovie = savedMovies.find(
-      (savedMovie) => savedMovie.movieId === movie.id
-    );
+    const deleteMovie = movie._id
+      ? movie
+      : savedMovies.find((savedMovie) => savedMovie.movieId === movie.id);
     mainApi
       .movieDisLike(deleteMovie._id)
       .then((deleteMovie) => {
         const newSavedMovies = savedMovies.filter(
           (movie) => movie._id !== deleteMovie._id
         );
+        const newSavedMoviesSearched = savedMoviesSearched.filter(
+          (movie) => movie._id !== deleteMovie._id
+        );
         setSavedMovies(newSavedMovies);
+        setSavedMoviesSearched(newSavedMoviesSearched);
         localStorage.setItem("savedMovies", JSON.stringify(newSavedMovies));
+        localStorage.setItem(
+          "savedMoviesSearched",
+          JSON.stringify(newSavedMoviesSearched)
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -264,48 +303,65 @@ function App() {
     setKeyword(e.target.value);
   }
 
-  function handleSearchSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
+  function handleChangeSavedSearchKeyword(e) {
+    setSavedKeyword(e.target.value);
+    console.log(e.target.value);
+  }
 
-    const moviesSearched = moviesData.filter((movie) => {
-      const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
+  function handleMoviesKeywordFilter(data, key) {
+    return data.filter((item) => {
+      const nameEN = item.nameEN ? item.nameEN : item.nameRU;
       return (
-        movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) ||
-        movie.description.toLowerCase().includes(keyword.toLowerCase()) ||
-        nameEN.toLowerCase().includes(keyword.toLowerCase())
+        item.nameRU.toLowerCase().includes(key.toLowerCase()) ||
+        item.description.toLowerCase().includes(key.toLowerCase()) ||
+        nameEN.toLowerCase().includes(key.toLowerCase())
       );
     });
-    const moviesSearchedShorts = moviesSearched.filter(
-      (movie) => movie.duration <= 40
-    );
+  }
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    const moviesSearched = handleMoviesKeywordFilter(moviesData, keyword);
     setMoviesSearched(moviesSearched);
-    setLoading(false);
     setIsWasRequest(true);
     localStorage.setItem("keyword", JSON.stringify(keyword));
     localStorage.setItem("moviesSearched", JSON.stringify(moviesSearched));
-    localStorage.setItem(
-      "moviesSearchedShorts",
-      JSON.stringify(moviesSearchedShorts)
-    );
     localStorage.setItem("isWasRequest", JSON.stringify(true));
+    setIsLoading(false);
+  }
+
+  function handleSavedSearchSubmit(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    const savedMoviesSearched = handleMoviesKeywordFilter(
+      savedMovies,
+      savedKeyword
+    );
+    setSavedMoviesSearched(savedMoviesSearched);
+    setIsWasSavedRequest(true);
+    localStorage.setItem("savedKeyword", JSON.stringify(savedKeyword));
+    localStorage.setItem(
+      "savedMoviesSearched",
+      JSON.stringify(savedMoviesSearched)
+    );
+    localStorage.setItem("isWasSavedRequest", JSON.stringify(true));
+    setIsLoading(false);
   }
 
   function handleCheckedShortFilm() {
-    setLoading(true);
-    if (!isCheckedShortFilm) {
-      setMoviesSearched(
-        JSON.parse(localStorage.getItem("moviesSearchedShorts"))
-      );
-    } else {
-      setMoviesSearched(JSON.parse(localStorage.getItem("moviesSearched")));
-    }
     setCheckedShortFilm(!isCheckedShortFilm);
     localStorage.setItem(
       "isCheckedShortFilm",
       JSON.stringify(!isCheckedShortFilm)
     );
-    setLoading(false);
+  }
+
+  function handleSavedCheckedShortFilm() {
+    setSavedCheckedShortFilm(!isSavedCheckedShortFilm);
+    localStorage.setItem(
+      "isSavedCheckedShortFilm",
+      JSON.stringify(!isSavedCheckedShortFilm)
+    );
   }
 
   return (
@@ -339,7 +395,7 @@ function App() {
             handleMovieLike={handleMovieLike}
             handleMovieDisLike={handleMovieDisLike}
           ></ProtectedRoute>
-          {/* <ProtectedRoute
+          <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
             loggedIn={loggedIn}
@@ -347,14 +403,15 @@ function App() {
             onNavMenuOpen={handleNavMenuOpen}
             isLoading={isLoading}
             onClose={closeAllPopup}
-            savedMovies={savedMovies}
-            isCheckedShortFilm={isCheckedShortFilm}
-            onCheckedShortFilm={handleCheckedShortFilm}
-            onSubmit={handleSearchSubmit}
-            isWasRequest={isWasRequest}
-            handleChangeSearchKeyword={handleChangeSearchKeyword}
-            keyword={keyword}
-          ></ProtectedRoute>*/}
+            savedMovies={savedMoviesSearched}
+            isCheckedShortFilm={isSavedCheckedShortFilm}
+            onCheckedShortFilm={handleSavedCheckedShortFilm}
+            onSubmit={handleSavedSearchSubmit}
+            isWasRequest={isWasSavedRequest}
+            handleChangeSearchKeyword={handleChangeSavedSearchKeyword}
+            keyword={savedKeyword}
+            handleMovieDisLike={handleMovieDisLike}
+          ></ProtectedRoute>
           <ProtectedRoute
             path="/profile"
             component={Profile}
