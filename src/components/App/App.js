@@ -64,7 +64,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        localStorage.removeItem("loggedIn");
+        handleCleanLocalStorageAndStates();
       });
   }, []);
 
@@ -79,7 +79,6 @@ function App() {
           })
           .catch((err) => {
             console.log(err);
-            handleCleanLocalStorageAndStates();
           });
       }
     }
@@ -112,7 +111,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        localStorage.removeItem("loggedIn");
+        handleCleanLocalStorageAndStates();
       });
   }
 
