@@ -21,6 +21,8 @@ function Movies({
   isWasRequest,
   handleChangeSearchKeyword,
   keyword,
+  handleMovieLike,
+  handleMovieDisLike,
 }) {
   return (
     <>
@@ -46,6 +48,8 @@ function Movies({
             movies={movies}
             savedMovies={savedMovies}
             isWasRequest={isWasRequest}
+            handleMovieLike={handleMovieLike}
+            handleMovieDisLike={handleMovieDisLike}
           ></MoviesCardList>
         )}
       </main>

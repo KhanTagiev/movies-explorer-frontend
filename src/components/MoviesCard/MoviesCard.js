@@ -2,9 +2,19 @@ import React from "react";
 
 import "./MoviesCard.css";
 
-function MoviesCard({ movie, isPlaceSavedMovies, savedMovies }) {
+function MoviesCard({
+  movie,
+  isPlaceSavedMovies,
+  savedMovies,
+  onLike,
+  onDisLike,
+}) {
   const { nameRU, duration, image, trailerLink } = movie;
-  const isSaved = savedMovies.some((i) => i.id === movie.id);
+  const isSaved = savedMovies.some((i) => i.movieId === movie.id);
+
+  function handleMoviesLiked() {
+    isSaved ? onDisLike(movie) : onLike(movie);
+  }
 
   return (
     <article className="movies-card__container">
@@ -29,6 +39,7 @@ function MoviesCard({ movie, isPlaceSavedMovies, savedMovies }) {
           isSaved ? "movies-card__btn_active" : ""
         } ${isPlaceSavedMovies ? "movies-card__btn_place_saved-movies" : ""}`}
         type="button"
+        onClick={handleMoviesLiked}
       >
         {isSaved ? "" : "Сохранить"}
       </button>

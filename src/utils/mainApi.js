@@ -65,3 +65,34 @@ export const updateProfile = (name, email) => {
     body: JSON.stringify({ name, email }),
   }).then((res) => handleCheckResponse(res));
 };
+
+export const getMovies = () => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  }).then((res) => handleCheckResponse(res));
+};
+
+export const movieLike = (movie) => {
+  return fetch(`${BASE_URL}/movies`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(movie),
+  }).then((res) => handleCheckResponse(res));
+};
+
+export const movieDisLike = (movieId) => {
+  return fetch(`${BASE_URL}/movies/${movieId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  }).then((res) => handleCheckResponse(res));
+};

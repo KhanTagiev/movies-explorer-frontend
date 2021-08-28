@@ -33,7 +33,9 @@ function App() {
       ? JSON.parse(localStorage.getItem("moviesSearchedShorts"))
       : JSON.parse(localStorage.getItem("moviesSearched")) || []
   );
-  const [savedMovies, setSavedMovies] = React.useState([]);
+  const [savedMovies, setSavedMovies] = React.useState(
+    JSON.parse(localStorage.getItem("savedMovies")) || []
+  );
 
   const [isWasRequest, setIsWasRequest] = React.useState(
     JSON.parse(localStorage.getItem("isWasRequest")) || false
@@ -74,6 +76,7 @@ function App() {
         moviesApi
           .getMovies()
           .then((movies) => {
+            console.log("movies");
             setMoviesData(movies);
             localStorage.setItem("moviesDB", JSON.stringify(movies));
           })
@@ -81,8 +84,20 @@ function App() {
             console.log(err);
           });
       }
+      if (savedMovies.length === 0) {
+        mainApi
+          .getMovies()
+          .then((savedMovies) => {
+            console.log("SavedMovies");
+            setSavedMovies(savedMovies);
+            localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
-  }, [loggedIn]);
+  }, [loggedIn, moviesData.length, savedMovies.length]);
 
   function handleCleanLocalStorageAndStates() {
     localStorage.clear();
@@ -93,6 +108,7 @@ function App() {
       _id: "",
     });
     setMoviesData([]);
+    setSavedMovies([]);
     setMoviesSearched([]);
     setIsWasRequest(false);
     setKeyword("");
@@ -192,6 +208,49 @@ function App() {
       });
   }
 
+  function handleMovieLike(movie) {
+    mainApi
+      .movieLike({
+        country: movie.country ? movie.country : "Нет данных",
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: `https://api.nomoreparties.co${movie.image.url}`,
+        trailer: movie.trailerLink,
+        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+        movieId: movie.id,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN ? movie.nameEN : movie.nameRU,
+      })
+      .then((newMovie) => {
+        const newSavedMovies = [newMovie, ...savedMovies];
+        setSavedMovies(newSavedMovies);
+        localStorage.setItem("savedMovies", JSON.stringify(newSavedMovies));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleMovieDisLike(movie) {
+    const deleteMovie = savedMovies.find(
+      (savedMovie) => savedMovie.movieId === movie.id
+    );
+    mainApi
+      .movieDisLike(deleteMovie._id)
+      .then((deleteMovie) => {
+        const newSavedMovies = savedMovies.filter(
+          (movie) => movie._id !== deleteMovie._id
+        );
+        setSavedMovies(newSavedMovies);
+        localStorage.setItem("savedMovies", JSON.stringify(newSavedMovies));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function handleNavMenuOpen() {
     setNavMenuOpen(true);
   }
@@ -277,6 +336,8 @@ function App() {
             isWasRequest={isWasRequest}
             handleChangeSearchKeyword={handleChangeSearchKeyword}
             keyword={keyword}
+            handleMovieLike={handleMovieLike}
+            handleMovieDisLike={handleMovieDisLike}
           ></ProtectedRoute>
           {/* <ProtectedRoute
             path="/saved-movies"

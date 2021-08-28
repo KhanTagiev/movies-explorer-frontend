@@ -19,6 +19,8 @@ function MoviesCardList({
   savedMovies,
   isPlaceSavedMovies,
   isWasRequest,
+  handleMovieLike,
+  handleMovieDisLike,
 }) {
   const size = useResizeWindow();
   const [moviesCount, setMoviesCount] = React.useState(0);
@@ -54,6 +56,8 @@ function MoviesCardList({
                 movie={movie}
                 isPlaceSavedMovies={isPlaceSavedMovies}
                 savedMovies={savedMovies}
+                onLike={handleMovieLike}
+                onDisLike={handleMovieDisLike}
               />
             ))}
           </ul>
