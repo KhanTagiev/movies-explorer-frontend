@@ -9,27 +9,33 @@ function InfoTooltipPopup({ isOpen, onClose, status }) {
     if (isOpen) {
       document.addEventListener("click", closeClickPopup);
       document.addEventListener("keydown", closeKeyPopup);
+      setTimeout( () => {
+        handleClosePopup()
+      },5000)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
+
+  function handleClosePopup() {
+    onClose();
+    document.removeEventListener("click", closeClickPopup);
+    document.removeEventListener("keydown", closeKeyPopup);
+  }
+
 
   function closeClickPopup(evt) {
     if (
       evt.target.classList.contains("popup__btn_close") ||
       evt.target.classList.contains("popup")
     ) {
-      onClose();
-      document.removeEventListener("click", closeClickPopup);
-      document.removeEventListener("keydown", closeKeyPopup);
+      handleClosePopup()
     }
   }
 
   function closeKeyPopup(evt) {
     if (evt.key === popupCloseKey) {
-      onClose();
-      document.removeEventListener("click", closeClickPopup);
-      document.removeEventListener("keydown", closeKeyPopup);
+      handleClosePopup()
     }
   }
 
