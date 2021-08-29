@@ -6,13 +6,20 @@ import logoIcon from "../../images/icons/logo.svg";
 import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Login({ handleSignIn }) {
-  const { values, handleChange, resetForm, errors, isValid } =
-    useFormAndValidation();
+  const {
+    values,
+    handleChange,
+    handleChangeIsValid,
+    resetForm,
+    errors,
+    isValid,
+  } = useFormAndValidation();
   const { email, password } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && handleSignIn({ email, password }, resetForm);
+    isValid &&
+      handleSignIn({ email, password }, resetForm, handleChangeIsValid);
   }
 
   return (

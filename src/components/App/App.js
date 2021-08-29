@@ -153,26 +153,52 @@ function App() {
       });
   }
 
-  function handleSignUp({ email, password, name }, resetForm) {
+  function handleSignUp(
+    { email, password, name },
+    resetForm,
+    handleChangeIsValid
+  ) {
+    handleChangeIsValid(false);
     mainApi
       .signUp(email, password, name)
       .then((data) => {
         handleSignIn(
           { email, password },
           resetForm,
+          handleChangeIsValid,
           "Вы успешно зарегистрировались. Добро пожаловать!"
         );
       })
       .catch((err) => {
-        setStatus({
-          isSuccess: false,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
-        });
+        handleChangeIsValid(true);
+        if (err === "Ошибка 409") {
+          setStatus({
+            isSuccess: false,
+            message: "Пользователь с таким E-mail уже существует!",
+          });
+        } else if (err === "Ошибка 400") {
+          setStatus({
+            isSuccess: false,
+            message:
+              "Переданы некорректные данные! Проверьте правильность введенных данных",
+          });
+        } else {
+          setStatus({
+            isSuccess: false,
+            message: "Что-то пошло не так! Попробуйте ещё раз.",
+          });
+        }
         setIsInfoTooltipPopupOpen(true);
       });
   }
 
-  function handleSignIn({ email, password }, resetForm, successCustomMessage) {
+  function handleSignIn(
+    { email, password },
+    resetForm,
+    handleChangeIsValid,
+    successCustomMessage
+  ) {
+    handleChangeIsValid(false);
     mainApi
       .signIn(email, password)
       .then((data) => {
@@ -187,10 +213,19 @@ function App() {
         setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
-        setStatus({
-          isSuccess: false,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
-        });
+        handleChangeIsValid(true);
+        if (err === "Ошибка 401") {
+          setStatus({
+            isSuccess: false,
+            message:
+              "Переданы некорректные данные! Проверьте правильность введенных данных",
+          });
+        } else {
+          setStatus({
+            isSuccess: false,
+            message: "Что-то пошло не так! Попробуйте ещё раз.",
+          });
+        }
         setIsInfoTooltipPopupOpen(true);
       });
   }
@@ -210,7 +245,8 @@ function App() {
       });
   }
 
-  function handleUpdateProfile({ name, email }) {
+  function handleUpdateProfile({ name, email }, handleChangeIsValid) {
+    handleChangeIsValid(false);
     mainApi
       .updateProfile(name, email)
       .then((user) => {
@@ -222,6 +258,7 @@ function App() {
         setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
+        handleChangeIsValid(true);
         setStatus({
           isSuccess: false,
           message: "Что-то пошло не так! Попробуйте ещё раз.",

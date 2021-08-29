@@ -4,13 +4,20 @@ import { Link } from "react-router-dom";
 import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Register({ handleSignUp }) {
-  const { values, handleChange, resetForm, errors, isValid } =
-    useFormAndValidation();
+  const {
+    values,
+    handleChange,
+    handleChangeIsValid,
+    resetForm,
+    errors,
+    isValid,
+  } = useFormAndValidation();
   const { name, email, password } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && handleSignUp({ name, email, password }, resetForm);
+    isValid &&
+      handleSignUp({ name, email, password }, resetForm, handleChangeIsValid);
   }
 
   return (

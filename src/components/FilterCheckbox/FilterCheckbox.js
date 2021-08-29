@@ -2,7 +2,7 @@ import React from "react";
 
 import "./FilterCheckbox.css";
 
-function FilterCheckbox({isChecked, onChange, isWasRequest}) {
+function FilterCheckbox({ isChecked, onChange, isWasRequest }) {
   return (
     <label className="filter__label">
       <input

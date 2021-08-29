@@ -14,12 +14,13 @@ function Profile({
   onClose,
 }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const { values, handleChange, errors, isValid } = useFormAndValidation();
+  const { values, handleChange, handleChangeIsValid, errors, isValid } =
+    useFormAndValidation();
   const { name = currentUser.name, email = currentUser.email } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && handleUpdateProfile({ name, email });
+    isValid && handleUpdateProfile({ name, email }, handleChangeIsValid);
   }
 
   return (
@@ -29,7 +30,7 @@ function Profile({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-      ></Header>
+       />
       <main className="main">
         <section className="profile section">
           <div className="profile__container section__container">
