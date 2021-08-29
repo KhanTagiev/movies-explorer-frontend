@@ -9,6 +9,10 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
 function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
+  React.useEffect(() => {
+    document.title = "Главная — Movies Explorer"
+  }, []);
+
   return (
     <>
       <Header

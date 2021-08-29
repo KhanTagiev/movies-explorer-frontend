@@ -13,6 +13,9 @@ function Profile({
   handleUpdateProfile,
   onClose,
 }) {
+  React.useEffect(() => {
+    document.title = "Профиль — Movies Explorer"
+  }, []);
   const currentUser = React.useContext(CurrentUserContext);
   const { values, handleChange, handleChangeIsValid, errors, isValid } =
     useFormAndValidation();

@@ -23,6 +23,9 @@ function SavedMovies({
   handleChangeSearchKeyword,
   keyword,
 }) {
+  React.useEffect(() => {
+    document.title = "Сохраненные фильмы — Movies Explorer"
+  }, []);
   return (
     <>
       <Header

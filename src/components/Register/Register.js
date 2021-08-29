@@ -1,9 +1,14 @@
+import React from "react";
 import "./Register.css";
 import logoIcon from "../../images/icons/logo.svg";
 import { Link } from "react-router-dom";
 import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Register({ handleSignUp }) {
+  React.useEffect(() => {
+    document.title = "Регистрация — Movies Explorer"
+  }, []);
+
   const {
     values,
     handleChange,

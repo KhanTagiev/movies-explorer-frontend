@@ -6,6 +6,9 @@ import logoIcon from "../../images/icons/logo.svg";
 import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Login({ handleSignIn }) {
+  React.useEffect(() => {
+    document.title = "Авторизация — Movies Explorer"
+  }, []);
   const {
     values,
     handleChange,

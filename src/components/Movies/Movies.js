@@ -24,6 +24,9 @@ function Movies({
   handleMovieLike,
   handleMovieDisLike,
 }) {
+  React.useEffect(() => {
+    document.title = "Фильмы — Movies Explorer"
+  }, []);
   return (
     <>
       <Header
