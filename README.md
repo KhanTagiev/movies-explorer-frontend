@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# **Frontend проекта Movies Explorer**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **Описание проекта**
 
-## Available Scripts
+Сервис Movies Explorer c личным кабинетом и поиском фильмом на React.
 
-In the project directory, you can run:
+**Реализованный функционал сервиса:**
 
-### `npm start`
+1. Использование localStorage для хранения состояния React.useState и восстановления после перезагрузки.
+2. Подключен [Movies Explorer API](https://github.com/KhanTagiev/movies-explorer-api) для получения информации о профиле и сохраненных фильмах.
+3. Подключен BeatfilmMoviesApi для получения базы данных с фильмами.
+4. Поиск по базе сохраненных фильмов и базе BeatfilmMovies, возможность сохранить/удалить фильм из избранных.
+5. Редактирование профиля.
+6. Регистрация и авторизация с использованием [Movies Explorer API](https://github.com/KhanTagiev/movies-explorer-api).
+7. Валидация полей ввода в формах с использованием хука useCallback, блокировка элементов форм во время запроса.
+8. Информирование пользователей об успехе/ошибке при регистрации/авторизации и редактировании профиля через Popup.
+9. Информационный Popup с автоматическим закрытием через 5 секунд либо по нажатию на ESC/оверлэй.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Планируемый функционал сервиса:**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Popup с подробной информацией о фильме.
 
-### `npm test`
+**При создании сервиса были использованы такие технологии как:**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. HTML.
+2. CSS: технологии Media Queries, Flex и Grid контейнеров для создания адаптивной верстки.
+3. JS: создание переменных, функций и классов с публичными и приватными методами.
+4. React: использованы функциональные компоненты с хуками.
 
-### `npm run build`
+**Просмотр на домене**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[Ссылка на просмотр](https://movies.khan.nomoredomains.monster/)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Локальное развертывание проекта**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Клонирование репозитория.
+2. Запуск проекта в режиме разработки
 
-### `npm run eject`
+```sh
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Сборка проекта.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sh
+npm build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Готовый проект будет находиться в папке `build`.

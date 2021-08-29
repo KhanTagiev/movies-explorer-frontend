@@ -14,14 +14,18 @@ function SavedMovies({
   isLoading,
   savedMovies,
   onAddMovies,
-  isMoviesListExcess,
   onClose,
   isCheckedShortFilm,
   onCheckedShortFilm,
   onSubmit,
+  isWasRequest,
+  handleMovieDisLike,
+  handleChangeSearchKeyword,
+  keyword,
 }) {
-  isMoviesListExcess = true;
-
+  React.useEffect(() => {
+    document.title = "Сохраненные фильмы — Movies Explorer";
+  }, []);
   return (
     <>
       <Header
@@ -29,26 +33,31 @@ function SavedMovies({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-      ></Header>
+      />
       <main className="main">
         <SearchForm
           isChecked={isCheckedShortFilm}
           onChangeCheckbox={onCheckedShortFilm}
           onSubmit={onSubmit}
-        ></SearchForm>
+          isWasRequest={isWasRequest}
+          handleChange={handleChangeSearchKeyword}
+          keyword={keyword}
+        />
         {isLoading ? (
-          <Preloader></Preloader>
+          <Preloader/>
         ) : (
           <MoviesCardList
             movies={savedMovies}
             savedMovies={savedMovies}
             onAddMovies={onAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
+            isChecked={isCheckedShortFilm}
             isPlaceSavedMovies={true}
-          ></MoviesCardList>
+            isWasRequest={isWasRequest}
+            handleMovieDisLike={handleMovieDisLike}
+          />
         )}
       </main>
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 }

@@ -9,6 +9,10 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
 function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
+  React.useEffect(() => {
+    document.title = "Главная — Movies Explorer";
+  }, []);
+
   return (
     <>
       <Header
@@ -17,14 +21,14 @@ function Main({ loggedIn, isNavMenuOpen, onNavMenuOpen, onClose }) {
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
         isMainPlace={true}
-      ></Header>
+      />
       <main className="main">
-        <Promo></Promo>
-        <AboutProject></AboutProject>
-        <Techs></Techs>
-        <AboutMe></AboutMe>
+        <Promo/>
+        <AboutProject/>
+        <Techs/>
+        <AboutMe/>
       </main>
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 }

@@ -3,6 +3,10 @@ import React from "react";
 import "./PageNotFound.css";
 
 function PageNotFound({ history }) {
+  React.useEffect(() => {
+    document.title = "Несуществующая страница — Movies Explorer";
+  }, []);
+
   function handleGoBack() {
     history.goBack();
   }

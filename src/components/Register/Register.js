@@ -1,24 +1,28 @@
 import React from "react";
-
 import "./Register.css";
 import logoIcon from "../../images/icons/logo.svg";
 import { Link } from "react-router-dom";
+import useFormAndValidation from "../../hooks/useFormValidation";
 
-function Register() {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+function Register({ handleSignUp }) {
+  React.useEffect(() => {
+    document.title = "Регистрация — Movies Explorer";
+  }, []);
 
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
+  const {
+    values,
+    handleChange,
+    resetForm,
+    errors,
+    isValid,
+    isSending,
+    setIsSending,
+  } = useFormAndValidation();
+  const { name, email, password } = values;
 
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-  }
-
-  function handleChangePassword(e) {
-    setPassword(e.target.value);
+  function handleSubmit(e) {
+    e.preventDefault();
+    isValid && handleSignUp({ name, email, password }, resetForm, setIsSending);
   }
 
   return (
@@ -29,53 +33,73 @@ function Register() {
             <img className="header__image" src={logoIcon} alt="Логотип" />
           </Link>
           <h2 className="register__title">Добро пожаловать!</h2>
-          <form className="register__form">
+          <form
+            className="register__form"
+            name="register__form"
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <fieldset className="register__fieldset">
               <label className="register__label">
                 <span className="register__label-text">Имя</span>
                 <input
-                  className="register__input register__input_name"
+                  className={`register__input ${
+                    errors.name ? "register__input_invalid" : ""
+                  }`}
                   type="text"
                   value={name}
                   placeholder=""
-                  name="register-name"
+                  name="name"
                   minLength="2"
                   maxLength="40"
                   required
-                  onChange={handleChangeName}
+                  onChange={handleChange}
+                  disabled={isSending}
                 />
-                <span className="register__input-error profile-name-error"></span>
+                <span className="register__input-error profile-name-error">
+                  {errors.name}
+                </span>
               </label>
               <label className="register__label">
                 <span className="register__label-text">E-mail</span>
                 <input
-                  className="register__input register__input_email"
+                  className={`register__input ${
+                    errors.email ? "register__input_invalid" : ""
+                  }`}
                   type="email"
                   value={email}
                   placeholder=""
-                  name="register-email"
+                  name="email"
                   minLength="2"
                   maxLength="40"
                   required
-                  onChange={handleChangeEmail}
+                  onChange={handleChange}
+                  disabled={isSending}
                 />
-                <span className="register__input-error profile-email-error"></span>
+                <span className="register__input-error profile-email-error">
+                  {errors.email}
+                </span>
               </label>
               <label className="register__label">
                 <span className="register__label-text">Пароль</span>
                 <input
-                  className="register__input register__input_password register__input_invalid"
+                  className={`register__input ${
+                    errors.password ? "register__input_invalid" : ""
+                  }`}
                   type="password"
                   value={password}
                   placeholder=""
-                  name="register-password"
-                  minLength="2"
+                  name="password"
+                  minLength="8"
                   maxLength="40"
+                  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                  title="Используйте большие и маленькие буквы, добавьте цифры."
                   required
-                  onChange={handleChangePassword}
+                  onChange={handleChange}
+                  disabled={isSending}
                 />
                 <span className="register__input-error profile-email-error">
-                  Что-то пошло не так...
+                  {errors.password}
                 </span>
               </label>
               <div className="register__btn-container">
@@ -83,6 +107,7 @@ function Register() {
                   className="register__btn"
                   type="submit"
                   aria-label="Кнопка"
+                  disabled={!(isValid && !isSending)}
                 >
                   Зарегистрироваться
                 </button>

@@ -15,12 +15,18 @@ function Movies({
   onClose,
   onSubmit,
   movies,
-  onAddMovies,
-  isMoviesListExcess,
   isCheckedShortFilm,
   onCheckedShortFilm,
   savedMovies,
+  isWasRequest,
+  handleChangeSearchKeyword,
+  keyword,
+  handleMovieLike,
+  handleMovieDisLike,
 }) {
+  React.useEffect(() => {
+    document.title = "Фильмы — Movies Explorer";
+  }, []);
   return (
     <>
       <Header
@@ -28,25 +34,30 @@ function Movies({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-      ></Header>
+      />
       <main className="main">
         <SearchForm
           isChecked={isCheckedShortFilm}
           onChangeCheckbox={onCheckedShortFilm}
           onSubmit={onSubmit}
-        ></SearchForm>
+          handleChange={handleChangeSearchKeyword}
+          keyword={keyword}
+          isWasRequest={isWasRequest}
+        />
         {isLoading ? (
-          <Preloader></Preloader>
+          <Preloader/>
         ) : (
           <MoviesCardList
             movies={movies}
             savedMovies={savedMovies}
-            onAddMovies={onAddMovies}
-            isMoviesListExcess={isMoviesListExcess}
-          ></MoviesCardList>
+            isWasRequest={isWasRequest}
+            isChecked={isCheckedShortFilm}
+            handleMovieLike={handleMovieLike}
+            handleMovieDisLike={handleMovieDisLike}
+          />
         )}
       </main>
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 }
