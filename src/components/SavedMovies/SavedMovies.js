@@ -24,7 +24,7 @@ function SavedMovies({
   keyword,
 }) {
   React.useEffect(() => {
-    document.title = "Сохраненные фильмы — Movies Explorer"
+    document.title = "Сохраненные фильмы — Movies Explorer";
   }, []);
   return (
     <>
@@ -33,7 +33,7 @@ function SavedMovies({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-      ></Header>
+      />
       <main className="main">
         <SearchForm
           isChecked={isCheckedShortFilm}
@@ -42,9 +42,9 @@ function SavedMovies({
           isWasRequest={isWasRequest}
           handleChange={handleChangeSearchKeyword}
           keyword={keyword}
-        ></SearchForm>
+        />
         {isLoading ? (
-          <Preloader></Preloader>
+          <Preloader/>
         ) : (
           <MoviesCardList
             movies={savedMovies}
@@ -54,10 +54,10 @@ function SavedMovies({
             isPlaceSavedMovies={true}
             isWasRequest={isWasRequest}
             handleMovieDisLike={handleMovieDisLike}
-          ></MoviesCardList>
+          />
         )}
       </main>
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 }

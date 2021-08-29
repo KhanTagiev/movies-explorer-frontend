@@ -25,7 +25,7 @@ function Movies({
   handleMovieDisLike,
 }) {
   React.useEffect(() => {
-    document.title = "Фильмы — Movies Explorer"
+    document.title = "Фильмы — Movies Explorer";
   }, []);
   return (
     <>
@@ -34,7 +34,7 @@ function Movies({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-      ></Header>
+      />
       <main className="main">
         <SearchForm
           isChecked={isCheckedShortFilm}
@@ -43,9 +43,9 @@ function Movies({
           handleChange={handleChangeSearchKeyword}
           keyword={keyword}
           isWasRequest={isWasRequest}
-        ></SearchForm>
+        />
         {isLoading ? (
-          <Preloader></Preloader>
+          <Preloader/>
         ) : (
           <MoviesCardList
             movies={movies}
@@ -54,10 +54,10 @@ function Movies({
             isChecked={isCheckedShortFilm}
             handleMovieLike={handleMovieLike}
             handleMovieDisLike={handleMovieDisLike}
-          ></MoviesCardList>
+          />
         )}
       </main>
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 }

@@ -151,39 +151,34 @@ function App() {
       });
   }
 
-  function handleSignUp(
-    { email, password, name },
-    resetForm,
-    handleChangeIsValid
-  ) {
-    handleChangeIsValid(false);
+  function handleSignUp({ email, password, name }, resetForm, setIsSending) {
+    setIsSending(true);
     mainApi
       .signUp(email, password, name)
       .then((data) => {
         handleSignIn(
           { email, password },
           resetForm,
-          handleChangeIsValid,
+          setIsSending,
           "Вы успешно зарегистрировались. Добро пожаловать!"
         );
       })
       .catch((err) => {
-        handleChangeIsValid(true);
+        setIsSending(false);
         if (err === "Ошибка 409") {
           setStatus({
             isSuccess: false,
-            message: "Пользователь с таким E-mail уже существует!",
+            message: "Пользователь с таким email уже существует.",
           });
         } else if (err === "Ошибка 400") {
           setStatus({
             isSuccess: false,
-            message:
-              "Переданы некорректные данные! Проверьте правильность введенных данных",
+            message: "При регистрации пользователя произошла ошибка.",
           });
         } else {
           setStatus({
             isSuccess: false,
-            message: "Что-то пошло не так! Попробуйте ещё раз.",
+            message: "На сервере произошла ошибка. Попробуйте ещё раз.",
           });
         }
         setIsInfoTooltipPopupOpen(true);
@@ -193,10 +188,10 @@ function App() {
   function handleSignIn(
     { email, password },
     resetForm,
-    handleChangeIsValid,
+    setIsSending,
     successCustomMessage
   ) {
-    handleChangeIsValid(false);
+    setIsSending(true);
     mainApi
       .signIn(email, password)
       .then((data) => {
@@ -211,17 +206,16 @@ function App() {
         setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
-        handleChangeIsValid(true);
+        setIsSending(false);
         if (err === "Ошибка 401") {
           setStatus({
             isSuccess: false,
-            message:
-              "Переданы некорректные данные! Проверьте правильность введенных данных",
+            message: "Вы ввели неправильный логин или пароль.",
           });
         } else {
           setStatus({
             isSuccess: false,
-            message: "Что-то пошло не так! Попробуйте ещё раз.",
+            message: "При авторизации произошла ошибка. Попробуйте ещё раз.",
           });
         }
         setIsInfoTooltipPopupOpen(true);
@@ -243,11 +237,12 @@ function App() {
       });
   }
 
-  function handleUpdateProfile({ name, email }, handleChangeIsValid) {
-    handleChangeIsValid(false);
+  function handleUpdateProfile({ name, email }, setIsValid, setIsSending) {
+    setIsSending(true);
     mainApi
       .updateProfile(name, email)
       .then((user) => {
+        setIsValid(false);
         setCurrentUser(user);
         setStatus({
           isSuccess: true,
@@ -256,12 +251,26 @@ function App() {
         setIsInfoTooltipPopupOpen(true);
       })
       .catch((err) => {
-        handleChangeIsValid(true);
-        setStatus({
-          isSuccess: false,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
-        });
+        if (err === "Ошибка 409") {
+          setStatus({
+            isSuccess: false,
+            message: "Пользователь с таким email уже существует.",
+          });
+        } else if (err === "Ошибка 400") {
+          setStatus({
+            isSuccess: false,
+            message: "При обновлении профиля произошла ошибка.",
+          });
+        } else {
+          setStatus({
+            isSuccess: false,
+            message: "500 На сервере произошла ошибка. Попробуйте ещё раз.",
+          });
+        }
         setIsInfoTooltipPopupOpen(true);
+      })
+      .finally(() => {
+        setIsSending(false);
       });
   }
 
@@ -409,7 +418,7 @@ function App() {
               isNavMenuOpen={isNavMenuOpen}
               onNavMenuOpen={handleNavMenuOpen}
               onClose={closeAllPopup}
-            ></Main>
+            />
           </Route>
           <ProtectedRoute
             path="/movies"
@@ -429,7 +438,7 @@ function App() {
             keyword={keyword}
             handleMovieLike={handleMovieLike}
             handleMovieDisLike={handleMovieDisLike}
-          ></ProtectedRoute>
+          />
           <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
@@ -446,7 +455,7 @@ function App() {
             handleChangeSearchKeyword={handleChangeSavedSearchKeyword}
             keyword={savedKeyword}
             handleMovieDisLike={handleMovieDisLike}
-          ></ProtectedRoute>
+          />
           <ProtectedRoute
             path="/profile"
             component={Profile}
@@ -456,12 +465,12 @@ function App() {
             handleSignOut={handleSignOut}
             handleUpdateProfile={handleUpdateProfile}
             onClose={closeAllPopup}
-          ></ProtectedRoute>
+          />
           <Route path="/signin">
-            <Login handleSignIn={handleSignIn}></Login>
+            <Login handleSignIn={handleSignIn}/>
           </Route>
           <Route path="/signup">
-            <Register handleSignUp={handleSignUp}></Register>
+            <Register handleSignUp={handleSignUp}/>
           </Route>
           <Route path="*">
             <PageNotFound history={history} />
@@ -471,7 +480,7 @@ function App() {
           isOpen={isInfoTooltipPopupOpen}
           status={status}
           onClose={closeAllPopup}
-        ></InfoTooltipPopup>
+        />
       </div>
     </CurrentUserContext.Provider>
   );

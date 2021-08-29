@@ -4,16 +4,14 @@ export default function useFormAndValidation() {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: e.target.validationMessage });
     setIsValid(e.target.closest("form").checkValidity());
-  };
-
-  const handleChangeIsValid = (value) => {
-    setIsValid(value);
+    setIsSending(false);
   };
 
   const resetForm = useCallback(
@@ -28,11 +26,12 @@ export default function useFormAndValidation() {
   return {
     values,
     handleChange,
-    handleChangeIsValid,
     errors,
     isValid,
+    isSending,
     resetForm,
     setValues,
     setIsValid,
+    setIsSending,
   };
 }

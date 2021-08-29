@@ -4,7 +4,7 @@ import "./PageNotFound.css";
 
 function PageNotFound({ history }) {
   React.useEffect(() => {
-    document.title = "Несуществующая страница — Movies Explorer"
+    document.title = "Несуществующая страница — Movies Explorer";
   }, []);
 
   function handleGoBack() {

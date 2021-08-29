@@ -14,16 +14,23 @@ function Profile({
   onClose,
 }) {
   React.useEffect(() => {
-    document.title = "Профиль — Movies Explorer"
+    document.title = "Профиль — Movies Explorer";
   }, []);
   const currentUser = React.useContext(CurrentUserContext);
-  const { values, handleChange, handleChangeIsValid, errors, isValid } =
-    useFormAndValidation();
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    isSending,
+    setIsValid,
+    setIsSending,
+  } = useFormAndValidation();
   const { name = currentUser.name, email = currentUser.email } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && handleUpdateProfile({ name, email }, handleChangeIsValid);
+    isValid && handleUpdateProfile({ name, email }, setIsValid, setIsSending);
   }
 
   return (
@@ -33,7 +40,7 @@ function Profile({
         isNavMenuOpen={isNavMenuOpen}
         onNavMenuOpen={onNavMenuOpen}
         onClose={onClose}
-       />
+      />
       <main className="main">
         <section className="profile section">
           <div className="profile__container section__container">
@@ -57,6 +64,7 @@ function Profile({
                     maxLength="30"
                     required
                     onChange={handleChange}
+                    disabled={isSending}
                   />
                   <span className="profile-form__input-error">
                     {errors.name}
@@ -74,6 +82,7 @@ function Profile({
                     maxLength="30"
                     required
                     onChange={handleChange}
+                    disabled={isSending}
                   />
                   <span className="profile-form__input-error">
                     {errors.email}
@@ -84,7 +93,7 @@ function Profile({
                   type="submit"
                   aria-label="Сохранить"
                   onClick={handleSubmit}
-                  disabled={!isValid}
+                  disabled={!(isValid && !isSending)}
                 >
                   Редактировать
                 </button>

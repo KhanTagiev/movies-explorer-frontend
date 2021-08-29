@@ -1,28 +1,27 @@
 import React from "react";
 
-import "./Login.css";
 import { Link } from "react-router-dom";
 import logoIcon from "../../images/icons/logo.svg";
 import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Login({ handleSignIn }) {
   React.useEffect(() => {
-    document.title = "Авторизация — Movies Explorer"
+    document.title = "Авторизация — Movies Explorer";
   }, []);
   const {
     values,
     handleChange,
-    handleChangeIsValid,
     resetForm,
     errors,
     isValid,
+    isSending,
+    setIsSending,
   } = useFormAndValidation();
   const { email, password } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid &&
-      handleSignIn({ email, password }, resetForm, handleChangeIsValid);
+    isValid && handleSignIn({ email, password }, resetForm, setIsSending);
   }
 
   return (
@@ -49,6 +48,7 @@ function Login({ handleSignIn }) {
                   maxLength="40"
                   required
                   onChange={handleChange}
+                  disabled={isSending}
                 />
                 <span className="register__input-error profile-email-error">
                   {errors.email}
@@ -70,6 +70,7 @@ function Login({ handleSignIn }) {
                   title="Используйте большие и маленькие буквы, добавьте цифры."
                   required
                   onChange={handleChange}
+                  disabled={isSending}
                 />
                 <span className="register__input-error profile-email-error">
                   {errors.password}
@@ -80,7 +81,7 @@ function Login({ handleSignIn }) {
                   className="register__btn"
                   type="submit"
                   aria-label="Кнопка"
-                  disabled={!isValid}
+                  disabled={!(isValid && !isSending)}
                 >
                   Войти
                 </button>

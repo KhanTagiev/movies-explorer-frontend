@@ -64,6 +64,11 @@
   outline: none;
 }
 
+.profile-form__input:disabled {
+  opacity: 0.6;
+  cursor: no-drop;
+}
+
 .profile-form__input-error {
   font-size: 10px;
   font-weight: 400;
@@ -88,7 +93,7 @@
 
 .profile-form__btn:disabled {
   opacity: 0.6;
-  cursor: default;
+  cursor: no-drop;
 }
 
 .profile-form__btn:hover {

@@ -80,6 +80,11 @@
   border-bottom-color: #ee3465;
 }
 
+.register__input:disabled {
+  opacity: 0.6;
+  cursor: no-drop;
+}
+
 .register__input-error {
   font-size: 10px;
   line-height: 12px;
@@ -120,7 +125,7 @@
 
 .register__btn:disabled {
   opacity: 0.6;
-  cursor: default;
+  cursor: no-drop;
 }
 .register__link-container {
   display: flex;

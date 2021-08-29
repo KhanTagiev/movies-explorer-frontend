@@ -6,23 +6,23 @@ import useFormAndValidation from "../../hooks/useFormValidation";
 
 function Register({ handleSignUp }) {
   React.useEffect(() => {
-    document.title = "Регистрация — Movies Explorer"
+    document.title = "Регистрация — Movies Explorer";
   }, []);
 
   const {
     values,
     handleChange,
-    handleChangeIsValid,
     resetForm,
     errors,
     isValid,
+    isSending,
+    setIsSending,
   } = useFormAndValidation();
   const { name, email, password } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid &&
-      handleSignUp({ name, email, password }, resetForm, handleChangeIsValid);
+    isValid && handleSignUp({ name, email, password }, resetForm, setIsSending);
   }
 
   return (
@@ -54,6 +54,7 @@ function Register({ handleSignUp }) {
                   maxLength="40"
                   required
                   onChange={handleChange}
+                  disabled={isSending}
                 />
                 <span className="register__input-error profile-name-error">
                   {errors.name}
@@ -73,6 +74,7 @@ function Register({ handleSignUp }) {
                   maxLength="40"
                   required
                   onChange={handleChange}
+                  disabled={isSending}
                 />
                 <span className="register__input-error profile-email-error">
                   {errors.email}
@@ -94,6 +96,7 @@ function Register({ handleSignUp }) {
                   title="Используйте большие и маленькие буквы, добавьте цифры."
                   required
                   onChange={handleChange}
+                  disabled={isSending}
                 />
                 <span className="register__input-error profile-email-error">
                   {errors.password}
@@ -104,7 +107,7 @@ function Register({ handleSignUp }) {
                   className="register__btn"
                   type="submit"
                   aria-label="Кнопка"
-                  disabled={!isValid}
+                  disabled={!(isValid && !isSending)}
                 >
                   Зарегистрироваться
                 </button>
