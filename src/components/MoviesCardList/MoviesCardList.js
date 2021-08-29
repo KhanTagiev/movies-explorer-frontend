@@ -28,8 +28,6 @@ function MoviesCardList({
   const [moviesAdd, setMoviesAdd] = React.useState(0);
   const [movieFilter, setMovieFilter] = React.useState(movies);
 
-  console.log(movieFilter);
-
   React.useEffect(() => {
     if (isChecked) {
       const moviesShorts = movies.filter((movie) => movie.duration <= 40);

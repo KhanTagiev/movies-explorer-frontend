@@ -88,7 +88,6 @@ function App() {
         moviesApi
           .getMovies()
           .then((movies) => {
-            console.log("movies");
             setMoviesData(movies);
             localStorage.setItem("moviesDB", JSON.stringify(movies));
           })
@@ -104,7 +103,6 @@ function App() {
         mainApi
           .getMovies()
           .then((savedMovies) => {
-            console.log("SavedMovies");
             setSavedMovies(savedMovies);
             localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
           })
