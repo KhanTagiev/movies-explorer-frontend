@@ -3,6 +3,7 @@
 ## **Описание проекта**
 
 Сервис Movies Explorer c личным кабинетом и поиском фильмом на React.
+<img src="https://github.com/KhanTagiev/KhanTagiev/raw/main/movies-explorer.gif" alt="GIF-видео с демонстрацией проекта">
 
 **Реализованный функционал сервиса:**
 
